@@ -1,0 +1,16 @@
+{
+    "name": "GS.Asteroids.Editor",
+    "rootNamespace": "GS.Asteroids.Editor",
+    "references": [
+        "GS.Asteroids"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
