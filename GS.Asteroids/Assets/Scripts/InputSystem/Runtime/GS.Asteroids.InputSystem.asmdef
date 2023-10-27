@@ -1,0 +1,17 @@
+{
+    "name": "GS.Asteroids.InputSystem",
+    "rootNamespace": "GS.Asteroids.InputSystem",
+    "references": [
+        "GS.Asteroids.Core",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

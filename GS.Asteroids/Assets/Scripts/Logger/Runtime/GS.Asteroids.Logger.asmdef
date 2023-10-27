@@ -1,8 +1,8 @@
 {
-    "name": "GS.Asteroids.Editor",
-    "rootNamespace": "GS.Asteroids.Editor",
+    "name": "GS.Asteroids.Logger",
+    "rootNamespace": "GS.Asteroids.Logger",
     "references": [
-        "GS.Asteroids"
+        "GS.Asteroids.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

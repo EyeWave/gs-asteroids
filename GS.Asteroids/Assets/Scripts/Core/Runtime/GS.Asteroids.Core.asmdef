@@ -1,6 +1,6 @@
 {
-    "name": "GS.Asteroids",
-    "rootNamespace": "GS.Asteroids",
+    "name": "GS.Asteroids.Core",
+    "rootNamespace": "GS.Asteroids.Core",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
