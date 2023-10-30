@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace GS.Asteroids.Root
 {
-    public sealed class RootCompositeProvider : IRoot, IRefreshable, IDisposable
+    internal sealed class RootCompositeProvider : IRoot, IRefreshable, IDisposable
     {
         private readonly HashSet<IRefreshable> _refreshables = new HashSet<IRefreshable>(128);
         private readonly HashSet<IDisposable> _disposables = new HashSet<IDisposable>(128);

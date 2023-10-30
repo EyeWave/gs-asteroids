@@ -5,7 +5,7 @@ using UnityEngine.InputSystem.Interactions;
 
 namespace GS.Asteroids.InputSystem
 {
-    public sealed class AsteroidsInputSystemProvider : IInputSystem
+    internal sealed class AsteroidsInputSystemProvider : IInputSystem
     {
         public event Action Fire;
 
@@ -13,7 +13,7 @@ namespace GS.Asteroids.InputSystem
 
         private AsteroidsSimpleControls _controls;
 
-        public AsteroidsInputSystemProvider()
+        internal AsteroidsInputSystemProvider()
         {
             _controls = new AsteroidsSimpleControls();
 

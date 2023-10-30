@@ -1,12 +1,8 @@
 {
-    "name": "GS.Asteroids.Root",
-    "rootNamespace": "GS.Asteroids.Root",
+    "name": "GS.Asteroids.Level",
+    "rootNamespace": "GS.Asteroids.Level",
     "references": [
-        "GS.Asteroids.Core",
-        "GS.Asteroids.InputSystem",
-        "GS.Asteroids.Logger",
-        "GS.Asteroids.DrawSystem",
-        "GS.Asteroids.Level"
+        "GS.Asteroids.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
