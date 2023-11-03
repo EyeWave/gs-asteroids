@@ -9,43 +9,43 @@ namespace GS.Asteroids.Core.Systems
     {
         private readonly ILevel _level;
 
-        internal TeleportSystem(ILevel level, int capacity = 1024) : base(capacity)
+        internal TeleportSystem(ILevel level) : base()
         {
             _level = level ?? throw new ArgumentNullException(nameof(level));
         }
 
         public void Refresh()
         {
-            foreach (ITeleportable @object in Collection)
-                if (@object != null)
-                    TryTeleport(@object);
+            foreach (ITeleportable entityOfCollection in Collection)
+                if (entityOfCollection != null)
+                    TryTeleport(entityOfCollection);
         }
 
-        private void TryTeleport(ITeleportable @object)
+        private void TryTeleport(ITeleportable entity)
         {
-            if (@object.Position.y > _level.Top + @object.Radius && CheckMoveDirection(@object.Velocity, Vector3.up))
-                TeleportByY(@object, _level.Bottom - @object.Radius);
-            else if (@object.Position.y < _level.Bottom - @object.Radius && CheckMoveDirection(@object.Velocity, Vector3.down))
-                TeleportByY(@object, _level.Top + @object.Radius);
-            else if (@object.Position.x < _level.Left - @object.Radius && CheckMoveDirection(@object.Velocity, Vector3.left))
-                TeleportByX(@object, _level.Right + @object.Radius);
-            else if (@object.Position.x > _level.Right + @object.Radius && CheckMoveDirection(@object.Velocity, Vector3.right))
-                TeleportByX(@object, _level.Left - @object.Radius);
+            if (entity.Position.y > _level.Top + entity.Radius && CheckTeleportDirection(entity.Velocity, Vector3.up))
+                TeleportByY(entity, _level.Bottom - entity.Radius);
+            else if (entity.Position.y < _level.Bottom - entity.Radius && CheckTeleportDirection(entity.Velocity, Vector3.down))
+                TeleportByY(entity, _level.Top + entity.Radius);
+            else if (entity.Position.x < _level.Left - entity.Radius && CheckTeleportDirection(entity.Velocity, Vector3.left))
+                TeleportByX(entity, _level.Right + entity.Radius);
+            else if (entity.Position.x > _level.Right + entity.Radius && CheckTeleportDirection(entity.Velocity, Vector3.right))
+                TeleportByX(entity, _level.Left - entity.Radius);
         }
 
-        private bool CheckMoveDirection(Vector3 objectVelocity, Vector3 checkDirection)
+        private bool CheckTeleportDirection(Vector3 objectVelocity, Vector3 checkDirection)
         {
             return Vector3.Dot(checkDirection, objectVelocity) > 0.0f;
         }
 
-        private void TeleportByX(ITeleportable @object, float value)
+        private void TeleportByX(ITeleportable entity, float value)
         {
-            @object.Position = new Vector3(value, @object.Position.y);
+            entity.Position = new Vector3(value, entity.Position.y);
         }
 
-        private void TeleportByY(ITeleportable @object, float value)
+        private void TeleportByY(ITeleportable entity, float value)
         {
-            @object.Position = new Vector3(@object.Position.x, value);
+            entity.Position = new Vector3(entity.Position.x, value);
         }
     }
 }

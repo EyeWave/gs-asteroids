@@ -8,41 +8,42 @@ namespace GS.Asteroids.Core.Systems
 {
     internal sealed class RefreshDrawablePointsSystem : SystemCollectionProviderBase<IDrawableProvider>, IRefreshable
     {
-        public RefreshDrawablePointsSystem(int capacity = 1024) : base(capacity)
+        internal RefreshDrawablePointsSystem() : base()
         {
         }
 
-        internal override void Add(IDrawableProvider @object)
+        public override void Add(IEntity entity)
         {
-            base.Add(@object);
+            base.Add(entity);
 
-            RefreshDrawablePoints(@object);
+            if (entity is IDrawableProvider entityOfCollection)
+                RefreshDrawablePoints(entityOfCollection);
         }
 
         public void Refresh()
         {
-            foreach (IDrawableProvider drawableProvider in Collection)
-                if (drawableProvider != null)
-                    RefreshDrawablePoints(drawableProvider);
+            foreach (IDrawableProvider entityOfCollection in Collection)
+                if (entityOfCollection != null)
+                    RefreshDrawablePoints(entityOfCollection);
         }
 
-        private void RefreshDrawablePoints(IDrawableProvider @object)
+        private void RefreshDrawablePoints(IDrawableProvider entity)
         {
-            Vector3[] points = @object.GetPoints();
-            IReadOnlyList<Vector3> corePoints = @object.GetCorePoints();
+            Vector3[] points = entity.GetPoints();
+            IReadOnlyList<Vector3> corePoints = entity.CorePoints;
 
             for (int i = 0; i < corePoints.Count; i++)
             {
-                Vector3 movePoint = corePoints[i] + @object.Position;
+                Vector3 movePoint = corePoints[i] + entity.Position;
 
-                float rotationRad = @object.Rotation * Mathf.Deg2Rad;
-                float deltaX = movePoint.x - @object.Position.x;
-                float deltaY = movePoint.y - @object.Position.y;
+                float rotationRad = entity.Rotation * Mathf.Deg2Rad;
+                float deltaX = movePoint.x - entity.Position.x;
+                float deltaY = movePoint.y - entity.Position.y;
                 float cosRotationRad = Mathf.Cos(rotationRad);
                 float sinRotationRad = Mathf.Sin(rotationRad);
 
-                movePoint.x = @object.Position.x + deltaX * cosRotationRad - deltaY * sinRotationRad;
-                movePoint.y = @object.Position.y + deltaX * sinRotationRad + deltaY * cosRotationRad;
+                movePoint.x = entity.Position.x + deltaX * cosRotationRad - deltaY * sinRotationRad;
+                movePoint.y = entity.Position.y + deltaX * sinRotationRad + deltaY * cosRotationRad;
 
                 points[i] = movePoint;
             }

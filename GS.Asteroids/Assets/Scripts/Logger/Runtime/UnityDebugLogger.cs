@@ -13,7 +13,7 @@ namespace GS.Asteroids.Logger
 
         public void LogWarning(string message)
         {
-            Debug.LogWarning(message);
+            Debug.Log($"<color=yellow>Warning! {message}</color>");
         }
 
         public void LogError(string message)

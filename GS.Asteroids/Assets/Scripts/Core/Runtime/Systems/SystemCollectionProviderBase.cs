@@ -1,9 +1,11 @@
+using GS.Asteroids.Core.Entity;
+using GS.Asteroids.Core.Interfaces.GamePlay;
 using System;
 using System.Collections.Generic;
 
 namespace GS.Asteroids.Core.Systems
 {
-    internal abstract class SystemCollectionProviderBase<T> : IDisposable
+    internal abstract class SystemCollectionProviderBase<T> : IEntityProvider, IDisposable where T : IEntity
     {
         private readonly HashSet<T> _collection;
 
@@ -14,19 +16,35 @@ namespace GS.Asteroids.Core.Systems
             _collection = new HashSet<T>(Math.Max(0, capacity));
         }
 
+        public virtual void Init()
+        {
+        }
+
         public virtual void Dispose()
         {
             _collection.Clear();
         }
 
-        internal virtual void Add(T @object)
+        public virtual void Add(IEntity entity)
         {
-            _collection.Add(@object);
+            if (entity is T entityOfCollection)
+                _collection.Add(entityOfCollection);
         }
 
-        internal virtual void Remove(T @object)
+        public virtual void AddRange(IEnumerable<IEntity> entities)
         {
-            _collection.Remove(@object);
+            foreach (IEntity entity in entities)
+                Add(entity);
+        }
+
+        public virtual bool Remove(IEntity entity)
+        {
+            bool result = false;
+
+            if (entity is T entityOfCollection)
+                result = _collection.Remove(entityOfCollection);
+
+            return result;
         }
     }
 }

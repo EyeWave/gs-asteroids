@@ -3,13 +3,15 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace GS.Asteroids.Core.Entity
 {
-    internal struct EntityDrawablePointsContainer
+    internal struct PointsContainer
     {
+        public static readonly PointsContainer Default = new PointsContainer();
+
         public float Radius { get; }
         public Vector3[] Points { get; }
         public IReadOnlyList<Vector3> CorePoints { get; }
 
-        public EntityDrawablePointsContainer(float radius, IReadOnlyList<Vector3> corePoints)
+        public PointsContainer(float radius, IReadOnlyList<Vector3> corePoints)
         {
             Radius = radius;
             CorePoints = corePoints;

@@ -6,7 +6,8 @@
         "GS.Asteroids.InputSystem",
         "GS.Asteroids.Logger",
         "GS.Asteroids.DrawSystem",
-        "GS.Asteroids.Level"
+        "GS.Asteroids.Level",
+        "GS.Asteroids.Configuration"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

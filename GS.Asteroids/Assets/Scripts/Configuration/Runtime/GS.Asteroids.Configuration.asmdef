@@ -1,0 +1,16 @@
+{
+    "name": "GS.Asteroids.Configuration",
+    "rootNamespace": "GS.Asteroids.Configuration",
+    "references": [
+        "GS.Asteroids.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

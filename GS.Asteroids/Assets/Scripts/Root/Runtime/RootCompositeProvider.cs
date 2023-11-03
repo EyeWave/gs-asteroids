@@ -6,28 +6,97 @@ namespace GS.Asteroids.Root
 {
     internal sealed class RootCompositeProvider : IRoot, IRefreshable, IDisposable
     {
-        private readonly HashSet<IRefreshable> _refreshables = new HashSet<IRefreshable>(128);
-        private readonly HashSet<IDisposable> _disposables = new HashSet<IDisposable>(128);
+        private readonly HashSet<IRefreshable> _refreshables = new HashSet<IRefreshable>(512);
+        private readonly HashSet<IDisposable> _disposables = new HashSet<IDisposable>(512);
+
+        private readonly HashSet<IRefreshable> _refreshablesInstall = new HashSet<IRefreshable>(512);
+        private readonly HashSet<IDisposable> _disposablesInstall = new HashSet<IDisposable>(512);
+
+        private readonly HashSet<IRefreshable> _refreshablesUninstall = new HashSet<IRefreshable>(512);
+        private readonly HashSet<IDisposable> _disposablesUninstall = new HashSet<IDisposable>(512);
 
         public void Install<T>(T system) where T : class
         {
             if (system is IRefreshable refreshable)
-                _refreshables.Add(refreshable);
+                _refreshablesInstall.Add(refreshable);
 
             if (system is IDisposable disposable)
-                _disposables.Add(disposable);
+                _disposablesInstall.Add(disposable);
+        }
+
+        public void Uninstall<T>(T system) where T : class
+        {
+            if (system is IRefreshable refreshable)
+                _refreshablesUninstall.Add(refreshable);
+
+            if (system is IDisposable disposable)
+                _disposablesUninstall.Add(disposable);
         }
 
         public void Refresh()
         {
             foreach (IRefreshable refreshable in _refreshables)
-                refreshable?.Refresh();
+            {
+                if (refreshable != null && !_refreshablesUninstall.Contains(refreshable))
+                    refreshable.Refresh();
+            }
+
+            if (_refreshablesInstall.Count > 0)
+            {
+                foreach (IRefreshable refreshable in _refreshablesInstall)
+                {
+                    _refreshables.Add(refreshable);
+                    refreshable.Refresh();
+                }
+
+                _refreshablesInstall.Clear();
+            }
+
+            if (_disposablesInstall.Count > 0)
+            {
+                foreach (IDisposable disposable in _disposablesInstall)
+                    _disposables.Add(disposable);
+
+                _disposablesInstall.Clear();
+            }
+
+            if (_refreshablesUninstall.Count > 0)
+            {
+                foreach (IRefreshable refreshable in _refreshablesUninstall)
+                    _refreshables.Remove(refreshable);
+
+                _refreshablesUninstall.Clear();
+            }
+
+            if (_disposablesUninstall.Count > 0)
+            {
+                foreach (IDisposable disposable in _disposablesUninstall)
+                {
+                    _disposables.Remove(disposable);
+                    disposable.Dispose();
+                }
+
+                _disposablesUninstall.Clear();
+            }
         }
 
         public void Dispose()
         {
             foreach (IDisposable disposable in _disposables)
                 disposable?.Dispose();
+
+            foreach (IDisposable disposable in _disposablesInstall)
+                disposable?.Dispose();
+
+            foreach (IDisposable disposable in _disposablesUninstall)
+                disposable?.Dispose();
+
+            _refreshables.Clear();
+            _refreshablesInstall.Clear();
+            _refreshablesUninstall.Clear();
+            _disposables.Clear();
+            _disposablesInstall.Clear();
+            _disposablesUninstall.Clear();
         }
     }
 }

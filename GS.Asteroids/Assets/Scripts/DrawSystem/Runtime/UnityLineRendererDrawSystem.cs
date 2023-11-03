@@ -75,6 +75,9 @@ namespace GS.Asteroids.DrawSystem
 
         private void OnObjectRelease(UnityLineRendererObject @object)
         {
+            if (@object == null)
+                return;
+
             @object.gameObject.SetActive(false);
             @object.Clear();
 
