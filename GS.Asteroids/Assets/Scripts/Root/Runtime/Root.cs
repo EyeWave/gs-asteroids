@@ -19,7 +19,7 @@ namespace GS.Asteroids.Root
         {
             _rootCompositeProvider = new RootCompositeProvider();
             Camera camera = GetConfiguratedCamera();
-            IAppContext appContext = await AppContextFactory.Create(this, camera);
+            IAppContext appContext = await AppContextFactory.Create(root: this, camera);
 
             new App(appContext);
         }

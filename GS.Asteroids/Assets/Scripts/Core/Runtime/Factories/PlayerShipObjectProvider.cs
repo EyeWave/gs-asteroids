@@ -10,25 +10,25 @@ namespace GS.Asteroids.Core.Factories
 {
     internal sealed class PlayerShipObjectProvider : ObjectProviderBase<PlayerShip>
     {
-        private readonly ILevel _level;
         private readonly float _radius;
+        private readonly Func<Vector3> _getStartPosition;
         private readonly IReadOnlyList<Vector3> _corePoints;
 
         internal PlayerShipObjectProvider(
             ObjectFactory<PlayerShip> objectFactory,
-            ILevel level,
+            Func<Vector3> getStartPosition,
             IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
         {
-            _level = level ?? throw new ArgumentNullException(nameof(level));
-            IPlayerConfig playerConfig = appConfigDataProvider?.GetConfig<IPlayerConfig>() ?? throw new ArgumentNullException(nameof(appConfigDataProvider));
+            _getStartPosition = getStartPosition ?? throw new ArgumentNullException(nameof(getStartPosition));
+            IPlayerConfig config = appConfigDataProvider?.GetConfig<IPlayerConfig>() ?? throw new ArgumentNullException(nameof(IPlayerConfig));
 
-            _radius = playerConfig.Radius;
+            _radius = config.Radius;
             _corePoints = appConfigDataProvider.GetCorePointsOfPlayerShip(_radius);
         }
 
         protected override void OnTake(PlayerShip @object)
         {
-            @object.Position = _level.GetStartPoint();
+            @object.Position = _getStartPosition.Invoke();
             @object.PointsContainer = new PointsContainer(_radius, _corePoints);
         }
 

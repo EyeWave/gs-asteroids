@@ -11,12 +11,11 @@ namespace GS.Asteroids.Core.States
         public AppState State => AppState.WaitRun;
 
         private readonly IInputSystem _inputSystem;
-        private readonly IDebugLogger _logger;
-
+        private readonly IUiSystem _uiSystem;
+        private readonly ILocalizationSystem _localizationSystem;
         private readonly IEntityProvider _entityProvider;
         private readonly IObjectProvider _objectProvider;
         private readonly ISystemProvider _systemProvider;
-
         private readonly IReadOnlyCollection<ISystem> _systems;
 
         private bool _isMoveNext;
@@ -27,10 +26,12 @@ namespace GS.Asteroids.Core.States
             IAppConfigDataProvider appConfigDataProvider,
             IInputSystem inputSystem,
             IDrawSystem drawSystem,
-            IDebugLogger logger)
+            IUiSystem uiSystem,
+            ILocalizationSystem localizationSystem)
         {
             _inputSystem = inputSystem;
-            _logger = logger;
+            _uiSystem = uiSystem;
+            _localizationSystem = localizationSystem;
 
             _entityProvider = compositeProvider;
             _objectProvider = compositeProvider;
@@ -39,28 +40,21 @@ namespace GS.Asteroids.Core.States
             ICollisionCreateProvider collisionCreateProvider = compositeProvider;
             ICollisionProcessProvider collisionProcessProvider = compositeProvider;
 
-            StarSystem starSystem = new StarSystem(appConfigDataProvider, level, _entityProvider, _objectProvider);
-            MoveSystem moveSystem = new MoveSystem();
-            OutOfLeveSystem outOfLeveSystem = new OutOfLeveSystem(level, collisionCreateProvider);
-            CollidablesDestroySystem collidablesDestroySystem = new CollidablesDestroySystem(collisionProcessProvider, _entityProvider, _objectProvider);
-            RefreshDrawablePointsSystem refreshDrawablePointsSystem = new RefreshDrawablePointsSystem();
-            DrawSystemProvider drawSystemProvider = new DrawSystemProvider(drawSystem);
-
             _systems = new List<ISystem>
             {
-                starSystem,
-                moveSystem,
-                outOfLeveSystem,
-                collidablesDestroySystem,
-                refreshDrawablePointsSystem,
-                drawSystemProvider,
+                new StarSystem(appConfigDataProvider, level, _entityProvider, _objectProvider),
+                new MoveSystem(),
+                new OutOfLeveSystem(level, collisionCreateProvider),
+                new CollidablesDestroySystem(collisionProcessProvider, _entityProvider, _objectProvider),
+                new RefreshDrawablePointsSystem(),
+                new DrawSystemProvider(drawSystem),
             };
         }
 
         public void Enter()
         {
             _isMoveNext = false;
-            _inputSystem.Fire += DoMoveNext;
+            _inputSystem.AlternativeFire += DoMoveNext;
 
             foreach (ISystem system in _systems)
             {
@@ -68,7 +62,11 @@ namespace GS.Asteroids.Core.States
                 system.Init();
             }
 
-            _logger.Log("PRESS SPASE TO START");
+            _uiSystem.ShowInfo
+            (
+                title: _localizationSystem.Get(AppLocalizationKeys.AppName).ToUpper(),
+                description: _localizationSystem.Get(AppLocalizationKeys.PressKeyToStart).ToUpper()
+            );
         }
 
         public void Exit()
@@ -78,6 +76,8 @@ namespace GS.Asteroids.Core.States
 
             foreach (ISystem system in _systems)
                 _systemProvider.Remove(system);
+
+            _uiSystem.HideInfo();
         }
 
         public bool MoveNext()
@@ -87,7 +87,7 @@ namespace GS.Asteroids.Core.States
 
         private void DoMoveNext()
         {
-            _inputSystem.Fire -= DoMoveNext;
+            _inputSystem.AlternativeFire -= DoMoveNext;
             _isMoveNext = true;
         }
     }

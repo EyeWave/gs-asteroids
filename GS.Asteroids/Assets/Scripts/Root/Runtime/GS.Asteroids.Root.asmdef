@@ -7,7 +7,9 @@
         "GS.Asteroids.Logger",
         "GS.Asteroids.DrawSystem",
         "GS.Asteroids.Level",
-        "GS.Asteroids.Configuration"
+        "GS.Asteroids.Configuration",
+        "GS.Asteroids.UiSystem",
+        "GS.Asteroids.LocalizationSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

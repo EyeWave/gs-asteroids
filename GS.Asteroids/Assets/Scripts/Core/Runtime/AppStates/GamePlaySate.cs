@@ -14,8 +14,9 @@ namespace GS.Asteroids.Core.States
         private readonly IEntityProvider _entityProvider;
         private readonly IObjectProvider _objectProvider;
         private readonly ISystemProvider _systemProvider;
-
         private readonly IReadOnlyCollection<ISystem> _systems;
+
+        private bool _isGameOver = false;
 
         internal GamePlaySate(
             CompositeProvider compositeProvider,
@@ -31,33 +32,27 @@ namespace GS.Asteroids.Core.States
             ICollisionCreateProvider collisionCreateProvider = compositeProvider;
             ICollisionProcessProvider collisionProcessProvider = compositeProvider;
 
-            PlayerShipInputSystem playerShipInputSystem = new PlayerShipInputSystem(appConfigDataProvider, inputSystem);
-            RotateSystem rotateSystem = new RotateSystem();
-            MoveSystem moveSystem = new MoveSystem();
-            TeleportSystem teleportSystem = new TeleportSystem(level);
-
-            AsteroidCreateSystem asteroidCreateSystem = new AsteroidCreateSystem(appConfigDataProvider, _entityProvider, _objectProvider);
-            BulletCreateSystem bulletCreateSystem = new BulletCreateSystem(inputSystem, _entityProvider, _objectProvider);
-            OutOfLeveSystem outOfLeveSystem = new OutOfLeveSystem(level, collisionCreateProvider);
-            CollidablesCollisionSystem collidablesCollisionSystem = new CollidablesCollisionSystem(collisionCreateProvider);
-
-            CollidablesDestroySystem collidablesDestroySystem = new CollidablesDestroySystem(collisionProcessProvider, _entityProvider, _objectProvider);
-            RefreshDrawablePointsSystem refreshDrawablePointsSystem = new RefreshDrawablePointsSystem();
-            DrawSystemProvider drawSystemProvider = new DrawSystemProvider(drawSystem);
-
             _systems = new List<ISystem>
             {
-                playerShipInputSystem,
-                rotateSystem,
-                moveSystem,
-                teleportSystem,
-                asteroidCreateSystem,
-                bulletCreateSystem,
-                outOfLeveSystem,
-                collidablesCollisionSystem,
-                collidablesDestroySystem,
-                refreshDrawablePointsSystem,
-                drawSystemProvider,
+                new PlayerShipInputSystem(appConfigDataProvider, inputSystem),
+                new AsteroidCreateSystem(appConfigDataProvider, _entityProvider, _objectProvider),
+                new AsteroidInputSystem(),
+                new UfoCreateSystem(appConfigDataProvider, _entityProvider, _objectProvider),
+                new UfoInputSystem(),
+                new BulletCreateSystem(inputSystem, _entityProvider, _objectProvider),
+
+                new RotateSystem(),
+                new MoveSystem(),
+                new TeleportSystem(level),
+
+                new OutOfLeveSystem(level, collisionCreateProvider),
+                new CollidablesCollisionSystem(collisionCreateProvider),
+
+                new CollidablesDestroySystem(collisionProcessProvider, _entityProvider, _objectProvider),
+                new RefreshDrawablePointsSystem(),
+                new DrawSystemProvider(drawSystem),
+
+                new GameOverSystem(() => _isGameOver = true),
             };
         }
 
@@ -79,11 +74,13 @@ namespace GS.Asteroids.Core.States
 
             foreach (ISystem system in _systems)
                 _systemProvider.Remove(system);
+
+            _isGameOver = false;
         }
 
         public bool MoveNext()
         {
-            return false;
+            return _isGameOver;
         }
     }
 }

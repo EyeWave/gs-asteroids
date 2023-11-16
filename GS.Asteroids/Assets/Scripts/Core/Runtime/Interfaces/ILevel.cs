@@ -4,8 +4,6 @@ namespace GS.Asteroids.Core.Interfaces
 {
     public interface ILevel
     {
-        Vector3 GetStartPoint();
-
         float ExtentWidth { get; }
         float ExtentHeight { get; }
         float Width { get; }
@@ -15,5 +13,9 @@ namespace GS.Asteroids.Core.Interfaces
         float Bottom { get; }
         float Left { get; }
         float Right { get; }
+
+        Vector3 GetPlayerStartPosition();
+
+        Vector3 GetEnemyStartPosition(float radius);
     }
 }

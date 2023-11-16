@@ -94,6 +94,7 @@ namespace GS.Asteroids.Root
             _refreshables.Clear();
             _refreshablesInstall.Clear();
             _refreshablesUninstall.Clear();
+
             _disposables.Clear();
             _disposablesInstall.Clear();
             _disposablesUninstall.Clear();

@@ -7,7 +7,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace GS.Asteroids.Configuration
 {
-    internal sealed class AsteroidsCorePointsGenerator
+    internal sealed class CorePointsGenerator
     {
         private readonly Dictionary<float, IReadOnlyList<Vector3>> _billetCacheMap = new Dictionary<float, IReadOnlyList<Vector3>>(8);
 
@@ -25,8 +25,16 @@ namespace GS.Asteroids.Configuration
         {
             float maxNoise = radius * 0.5f;
             int numOfPoints = Mathf.Max(3, Mathf.RoundToInt(maxNoise));
-            Func<float> getNoise = () => Random.Range(-maxNoise, 0.0f);
+            Func<int, float> getNoise = _ => Random.Range(-maxNoise, 0.0f);
 
+            return GetRoundPoints(radius, numOfPoints, getNoise);
+        }
+
+        internal IReadOnlyList<Vector3> GetCorePointsOfUfo(float radius)
+        {
+            int numOfPoints = 16;
+            int halfNumOfPoints = numOfPoints / 2;
+            Func<int, float> getNoise = index => index == 0 || index == halfNumOfPoints ? radius : 0.0f;
             return GetRoundPoints(radius, numOfPoints, getNoise);
         }
 
@@ -44,7 +52,7 @@ namespace GS.Asteroids.Configuration
                 }
                 else
                 {
-                    result = GetRoundPoints(radius, numOfPoints: 6, getNoise: () => 0.0f);
+                    result = GetRoundPoints(radius, numOfPoints: 6, getNoise: _ => 0.0f);
                 }
 
                 _billetCacheMap.Add(radius, result);
@@ -53,14 +61,14 @@ namespace GS.Asteroids.Configuration
             return result;
         }
 
-        private IReadOnlyList<Vector3> GetRoundPoints(float radius, int numOfPoints, Func<float> getNoise)
+        private IReadOnlyList<Vector3> GetRoundPoints(float radius, int numOfPoints, Func<int, float> getNoise)
         {
             return Enumerable
                 .Range(0, numOfPoints)
                 .Select(index =>
                 {
                     float angle = Map(index, 0, numOfPoints, 0, 2 * Mathf.PI);
-                    float resultRadius = radius + getNoise.Invoke();
+                    float resultRadius = radius + getNoise.Invoke(index);
                     return new Vector3(resultRadius * Mathf.Cos(angle), resultRadius * Mathf.Sin(angle));
                 })
                 .ToArray();

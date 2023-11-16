@@ -1,3 +1,4 @@
+using GS.Asteroids.Configuration.Interfaces;
 using GS.Asteroids.Core.Interfaces;
 using System.Threading.Tasks;
 
@@ -5,12 +6,10 @@ namespace GS.Asteroids.Configuration
 {
     public static class AsteroidsAppConfigDataProviderFactory
     {
-        public static async Task<IAppConfigDataProvider> Create()
+        public static async Task<IAppConfigDataProvider> Create(IAppConfigDataLoader appConfigDataLoader)
         {
-            IAppConfigDataLoader<AsteroidsAppConfigData> appConfigDataLoader = AsteroidsAppConfigDataLoaderFactory.Create();
-            AsteroidsAppConfigData appConfigData = await appConfigDataLoader.LoadAsync();
-            AsteroidsCorePointsGenerator corePointsGenerator = new AsteroidsCorePointsGenerator();
-
+            AsteroidsAppConfigData appConfigData = await appConfigDataLoader.LoadAsync<AsteroidsAppConfigData>(nameof(AsteroidsAppConfigData));
+            CorePointsGenerator corePointsGenerator = new CorePointsGenerator();
             return new AsteroidsAppConfigDataProvider(appConfigData, corePointsGenerator);
         }
     }

@@ -4,7 +4,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace GS.Asteroids.Core.Objects
 {
-    internal sealed class Asteroid : IRotatable, IMovable, ITeleportable, ICollidable, IDrawableProvider
+    internal sealed class Asteroid : IAsteroidInputHandler, IRotatable, IMovable, ITeleportable, ICollidable, IDrawableProvider
     {
         public Vector3 Position { get; set; }
         public Vector3 Velocity { get; set; }

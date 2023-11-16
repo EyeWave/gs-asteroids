@@ -11,6 +11,9 @@ namespace GS.Asteroids.Core.Systems
 {
     internal sealed class StarSystem : SystemCollectionProviderBase<ILevelCollidable>, IRefreshable
     {
+        private const int SpawnCount = 3;
+        private const double SpawnIntervalSec = 0.1d;
+
         private readonly IAsteroidConfig _asteroidConfig;
         private readonly ILevel _level;
         private readonly IEntityProvider _entityProvider;
@@ -36,20 +39,20 @@ namespace GS.Asteroids.Core.Systems
         {
             base.Init();
 
-            _spawntTime = GetNextTime(_asteroidConfig.SpawnIntervalSec / _asteroidConfig.UpIntervalSec);
+            _spawntTime = GetNextTime(SpawnIntervalSec);
         }
 
         public void Refresh()
         {
             if (_spawntTime < Now)
             {
-                _spawntTime = GetNextTime(_asteroidConfig.SpawnIntervalSec);
-                for (int i = 0; i < _asteroidConfig.CountMin; i++)
+                _spawntTime = GetNextTime(SpawnIntervalSec);
+                for (int i = 0; i < SpawnCount; i++)
                     _entityProvider.Add(Create());
             }
         }
 
-        private DateTime GetNextTime(float seconds)
+        private DateTime GetNextTime(double seconds)
         {
             return Now.AddSeconds(seconds);
         }

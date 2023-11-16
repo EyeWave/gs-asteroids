@@ -1,5 +1,5 @@
 using System;
-using UnityEngine;
+using Vector2 = UnityEngine.Vector2;
 
 namespace GS.Asteroids.Core.Interfaces
 {

@@ -28,7 +28,7 @@ namespace GS.Asteroids.Core.Systems
         {
             _entityProvider = entityProvider ?? throw new ArgumentNullException(nameof(entityProvider));
             _objectProvider = objectProvider ?? throw new ArgumentNullException(nameof(objectProvider));
-            _asteroidConfig = appConfigDataProvider?.GetConfig<IAsteroidConfig>() ?? throw new ArgumentNullException(nameof(appConfigDataProvider));
+            _asteroidConfig = appConfigDataProvider?.GetConfig<IAsteroidConfig>() ?? throw new ArgumentNullException(nameof(_asteroidConfig));
         }
 
         public override void Init()

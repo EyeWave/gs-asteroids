@@ -8,12 +8,12 @@ namespace GS.Asteroids.Configuration
     internal class AsteroidsAppConfigDataProvider : IAppConfigDataProvider
     {
         private readonly AsteroidsAppConfigData _appConfigData;
-        private readonly AsteroidsCorePointsGenerator _corePointsGenerator;
+        private readonly CorePointsGenerator _corePointsGenerator;
         private readonly Dictionary<RuntimeTypeHandle, object> _cacheConfigs;
 
         internal AsteroidsAppConfigDataProvider(
             AsteroidsAppConfigData appConfigData,
-            AsteroidsCorePointsGenerator corePointsGenerator)
+            CorePointsGenerator corePointsGenerator)
         {
             _appConfigData = appConfigData ?? throw new ArgumentNullException(nameof(appConfigData));
             _corePointsGenerator = corePointsGenerator ?? throw new ArgumentNullException(nameof(corePointsGenerator));
@@ -51,6 +51,11 @@ namespace GS.Asteroids.Configuration
         public IReadOnlyList<Vector3> GetCorePointsOfAsteroid(float radius)
         {
             return _corePointsGenerator.GetCorePointsOfAsteroid(radius);
+        }
+
+        public IReadOnlyList<Vector3> GetCorePointsOfUfo(float radius)
+        {
+            return _corePointsGenerator.GetCorePointsOfUfo(radius);
         }
 
         public IReadOnlyList<Vector3> GetCorePointsOfBullet(float radius)

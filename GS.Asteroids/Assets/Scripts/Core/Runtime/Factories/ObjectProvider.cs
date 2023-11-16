@@ -10,6 +10,7 @@ namespace GS.Asteroids.Core.Factories
     {
         private readonly ObjectProviderBase<PlayerShip> _playerShipProvider;
         private readonly ObjectProviderBase<Asteroid> _asteroidProvider;
+        private readonly ObjectProviderBase<Ufo> _ufoProvider;
         private readonly ObjectProviderBase<Bullet> _bulletProvider;
 
         private IList<IEntity> _activeObjects;
@@ -17,10 +18,12 @@ namespace GS.Asteroids.Core.Factories
         public ObjectProvider(
             ObjectProviderBase<PlayerShip> playerShipProvider,
             ObjectProviderBase<Asteroid> asteroidProvider,
+            ObjectProviderBase<Ufo> ufoProvider,
             ObjectProviderBase<Bullet> bulletProvider)
         {
             _playerShipProvider = playerShipProvider ?? throw new ArgumentNullException(nameof(playerShipProvider));
             _asteroidProvider = asteroidProvider ?? throw new ArgumentNullException(nameof(asteroidProvider));
+            _ufoProvider = ufoProvider ?? throw new ArgumentNullException(nameof(ufoProvider));
             _bulletProvider = bulletProvider ?? throw new ArgumentNullException(nameof(bulletProvider));
 
             _activeObjects = new List<IEntity>(512);
@@ -35,6 +38,8 @@ namespace GS.Asteroids.Core.Factories
                 result = _playerShipProvider.Take();
             else if (type == typeof(Asteroid))
                 result = _asteroidProvider.Take();
+            else if (type == typeof(Ufo))
+                result = _ufoProvider.Take();
             else if (type == typeof(Bullet))
                 result = _bulletProvider.Take();
             else
@@ -53,6 +58,8 @@ namespace GS.Asteroids.Core.Factories
                 _playerShipProvider.Return(entity as PlayerShip);
             else if (type == typeof(Asteroid))
                 _asteroidProvider.Return(entity as Asteroid);
+            else if (type == typeof(Ufo))
+                _ufoProvider.Return(entity as Ufo);
             else if (type == typeof(Bullet))
                 _bulletProvider.Return(entity as Bullet);
             else

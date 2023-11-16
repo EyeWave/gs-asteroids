@@ -10,9 +10,11 @@ namespace GS.Asteroids.Configuration
         public IPlayerConfig PlayerConfig => _playerConfig;
         public IAsteroidConfig AsteroidConfig => _asteroidConfig;
         public IBulletConfig BulletConfig => _bulletConfig;
+        public IUfoConfig UfoConfig => _ufoConfig;
 
         [SerializeField] private PlayerConfig _playerConfig;
         [SerializeField] private AsteroidConfig _asteroidConfig;
         [SerializeField] private BulletConfig _bulletConfig;
+        [SerializeField] private UfoConfig _ufoConfig;
     }
 }

@@ -10,21 +10,21 @@ namespace GS.Asteroids.Core.Factories
 {
     internal sealed class BulletObjectProvider : ObjectProviderBase<Bullet>
     {
-        private readonly IBulletConfig _bulletConfig;
+        private readonly IBulletConfig _config;
         private readonly IReadOnlyList<Vector3> _corePoints;
 
         internal BulletObjectProvider(
             ObjectFactory<Bullet> objectFactory,
             IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
         {
-            _bulletConfig = appConfigDataProvider?.GetConfig<IBulletConfig>() ?? throw new ArgumentNullException(nameof(appConfigDataProvider));
-            _corePoints = appConfigDataProvider.GetCorePointsOfBullet(_bulletConfig.Radius);
+            _config = appConfigDataProvider?.GetConfig<IBulletConfig>() ?? throw new ArgumentNullException(nameof(appConfigDataProvider));
+            _corePoints = appConfigDataProvider.GetCorePointsOfBullet(_config.Radius);
         }
 
         protected override void OnTake(Bullet @object)
         {
-            @object.Acceleration = _bulletConfig.Acceleration;
-            @object.PointsContainer = new PointsContainer(_bulletConfig.Radius, _corePoints);
+            @object.Acceleration = _config.Acceleration;
+            @object.PointsContainer = new PointsContainer(_config.Radius, _corePoints);
         }
 
         protected override void OnReturn(Bullet @object)

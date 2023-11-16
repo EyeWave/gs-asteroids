@@ -36,6 +36,7 @@ namespace GS.Asteroids.Core.Systems
         {
             base.Dispose();
 
+            _armourer = null;
             _inputSystem.Fire -= OnFire;
         }
 

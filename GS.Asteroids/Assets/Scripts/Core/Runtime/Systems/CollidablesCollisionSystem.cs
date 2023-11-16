@@ -1,9 +1,9 @@
 using GS.Asteroids.Core.Entity;
 using GS.Asteroids.Core.Interfaces;
 using GS.Asteroids.Core.Interfaces.GamePlay;
+using GS.Asteroids.Core.Objects;
 using System;
 using System.Collections.Generic;
-using Vector3 = UnityEngine.Vector3;
 
 namespace GS.Asteroids.Core.Systems
 {
@@ -29,13 +29,46 @@ namespace GS.Asteroids.Core.Systems
                     if (_markedEntities.Contains(secondEntity))
                         continue;
 
-                    if (firstEntity.GetType() != secondEntity.GetType())
-                        if (Vector3.Distance(firstEntity.Position, secondEntity.Position) < firstEntity.Radius + secondEntity.Radius)
-                            CreateCollision(firstEntity, secondEntity);
+                    if (CheckPossibleCollision(firstEntity, secondEntity) && CheckDistance(firstEntity, secondEntity))
+                        CreateCollision(firstEntity, secondEntity);
                 }
             }
 
             _markedEntities.Clear();
+        }
+
+        private bool CheckPossibleCollision(ICollidable firstEntity, ICollidable secondEntity)
+        {
+            bool result = false;
+
+            if (firstEntity is Bullet)
+                result = CheckPossibleCollisionWithBullet(secondEntity);
+            else if (secondEntity is Bullet)
+                result = CheckPossibleCollisionWithBullet(firstEntity);
+            else if (firstEntity is PlayerShip)
+                result = CheckPossibleCollisionWithPlayerShip(secondEntity);
+            else if (secondEntity is PlayerShip)
+                result = CheckPossibleCollisionWithPlayerShip(firstEntity);
+
+            return result;
+        }
+
+        private bool CheckPossibleCollisionWithBullet(ICollidable entity)
+        {
+            return entity is Asteroid || entity is Ufo;
+        }
+
+        private bool CheckPossibleCollisionWithPlayerShip(ICollidable entity)
+        {
+            return entity is Asteroid || entity is Ufo;
+        }
+
+        private bool CheckDistance(ICollidable firstEntity, ICollidable secondEntity)
+        {
+            float deltaX = firstEntity.Position.x - secondEntity.Position.x;
+            float deltaY = firstEntity.Position.y - secondEntity.Position.y;
+            float sumRadius = firstEntity.Radius + secondEntity.Radius;
+            return deltaX * deltaX + deltaY * deltaY < sumRadius * sumRadius;
         }
 
         private void CreateCollision(ICollidable firstEntity, ICollidable secondEntity)

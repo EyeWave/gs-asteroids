@@ -8,7 +8,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace GS.Asteroids.Core.Systems
 {
-    internal sealed class PlayerShipInputSystem : SystemCollectionProviderBase<IPlayerInputHandler>, IRefreshable
+    internal sealed class PlayerShipInputSystem : SystemCollectionProviderBase<IPlayerShipInputHandler>, IRefreshable
     {
         private readonly IInputSystem _inputSystem;
         private readonly float _maxAcceleration;
@@ -18,19 +18,19 @@ namespace GS.Asteroids.Core.Systems
         {
             _inputSystem = inputSystem ?? throw new ArgumentNullException(nameof(inputSystem));
 
-            IPlayerConfig playerConfig = appConfigDataProvider?.GetConfig<IPlayerConfig>() ?? throw new ArgumentNullException(nameof(appConfigDataProvider));
-            _maxAcceleration = playerConfig.MaxAcceleration;
-            _inertionMultipler = playerConfig.InertionMultipler;
+            IPlayerConfig config = appConfigDataProvider?.GetConfig<IPlayerConfig>() ?? throw new ArgumentNullException(nameof(IPlayerConfig));
+            _maxAcceleration = config.AccelerationMax;
+            _inertionMultipler = config.InertionMultipler;
         }
 
         public void Refresh()
         {
-            foreach (IPlayerInputHandler entityOfCollection in Collection)
+            foreach (IPlayerShipInputHandler entityOfCollection in Collection)
                 if (entityOfCollection != null)
                     HandleInput(entityOfCollection);
         }
 
-        private void HandleInput(IPlayerInputHandler entity)
+        private void HandleInput(IPlayerShipInputHandler entity)
         {
             Vector2 moveInput = _inputSystem.GetMove();
 

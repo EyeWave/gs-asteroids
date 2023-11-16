@@ -31,7 +31,8 @@ namespace GS.Asteroids.Core
                 appContext.AppConfigDataProvider,
                 appContext.InputSystem,
                 appContext.DrawSystem,
-                appContext.Logger
+                appContext.UiSystem,
+                appContext.LocalizationSystem
             );
 
             IAppState gamePlaySate = new GamePlaySate
@@ -45,7 +46,9 @@ namespace GS.Asteroids.Core
 
             IAppState gameOverSate = new GameOverSate
             (
-                appContext.Logger
+                appContext.InputSystem,
+                appContext.UiSystem,
+                appContext.LocalizationSystem
             );
 
             stateMachine.SetStates(waitRunState, gamePlaySate, gameOverSate);

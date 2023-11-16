@@ -31,7 +31,7 @@ namespace GS.Asteroids.Core.Systems
                 _collection.Add(entityOfCollection);
         }
 
-        public virtual void AddRange(IEnumerable<IEntity> entities)
+        public void AddRange(IEnumerable<IEntity> entities)
         {
             foreach (IEntity entity in entities)
                 Add(entity);

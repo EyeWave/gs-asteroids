@@ -1,5 +1,7 @@
 using GS.Asteroids.Core.Interfaces;
-using UnityEngine;
+using System;
+using Random = UnityEngine.Random;
+using Vector3 = UnityEngine.Vector3;
 
 namespace GS.Asteroids.Level
 {
@@ -29,9 +31,21 @@ namespace GS.Asteroids.Level
             Right = ExtentWidth;
         }
 
-        public Vector3 GetStartPoint()
+        public Vector3 GetPlayerStartPosition()
         {
             return Vector3.zero;
+        }
+
+        public Vector3 GetEnemyStartPosition(float radius)
+        {
+            return Random.Range(0, 4) switch
+            {
+                0 => new Vector3(Random.Range(Left - radius, Right + radius), Top + radius), // top
+                1 => new Vector3(Random.Range(Left - radius, Right + radius), Bottom - radius), // bottom
+                2 => new Vector3(Left - radius, Random.Range(Bottom - radius, Top + radius)), // left
+                3 => new Vector3(Right + radius, Random.Range(Bottom - radius, Top + radius)), // right
+                _ => throw new ArgumentOutOfRangeException("The level has only 4 sides"),
+            };
         }
 
         public override string ToString()
