@@ -53,6 +53,11 @@ namespace GS.Asteroids.Configuration
             return _corePointsGenerator.GetCorePointsOfAsteroid(radius);
         }
 
+        public IReadOnlyList<Vector3> GetCorePointsOfChip(float radius)
+        {
+            return _corePointsGenerator.GetCorePointsOfChip(radius);
+        }
+
         public IReadOnlyList<Vector3> GetCorePointsOfUfo(float radius)
         {
             return _corePointsGenerator.GetCorePointsOfUfo(radius);

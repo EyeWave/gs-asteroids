@@ -41,11 +41,14 @@ namespace GS.Asteroids.Core
                 appContext.Level,
                 appContext.AppConfigDataProvider,
                 appContext.InputSystem,
-                appContext.DrawSystem
+                appContext.DrawSystem,
+                appContext.UiSystem,
+                appContext.Logger
             );
 
             IAppState gameOverSate = new GameOverSate
             (
+                compositeProvider,
                 appContext.InputSystem,
                 appContext.UiSystem,
                 appContext.LocalizationSystem

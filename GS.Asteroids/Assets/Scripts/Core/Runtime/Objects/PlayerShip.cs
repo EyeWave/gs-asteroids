@@ -1,10 +1,11 @@
 using GS.Asteroids.Core.Entity;
+using GS.Asteroids.Core.Interfaces.UIContext;
 using System.Collections.Generic;
 using Vector3 = UnityEngine.Vector3;
 
 namespace GS.Asteroids.Core.Objects
 {
-    internal sealed class PlayerShip : IArmourer, IPlayerShipInputHandler, IRotatable, IMovable, ITeleportable, ICollidable, IDrawableProvider
+    internal sealed class PlayerShip : IArmourer, IPlayerShipInputHandler, IRotatable, IMovable, ITeleportable, ICollidable, IDrawableProvider, IUIPlayer
     {
         public Vector3 Position { get; set; }
         public Vector3 Velocity { get; set; }

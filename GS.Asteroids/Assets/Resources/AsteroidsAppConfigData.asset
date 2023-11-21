@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerConfig:
     _radius: 3
-    _ccelerationMax: 2
+    _accelerationMax: 2
     _inertionMultipler: 0.05
   _asteroidConfig:
     _radiusMin: 10
@@ -25,12 +25,25 @@ MonoBehaviour:
     _countUp: 1
     _spawnIntervalSec: 2
     _upIntervalSec: 6
-  _bulletConfig:
-    _radius: 1
-    _acceleration: 5
+    _reward: 1
+  _chipConfig:
+    _quantityOnDestroyOfAsteroid: 2
+    _multiplierOfAsteroidRadiusMin: 0.3
+    _multiplierOfAsteroidAccelerationMax: 1.5
+    _reward: 2
   _ufoConfig:
     _radius: 5
     _accelerationMin: 0.75
     _accelerationMax: 1.25
+    _inertionMultipler: 0.025
     _countMax: 2
     _spawnIntervalSec: 10
+    _reward: 3
+  _bulletConfig:
+    _radius: 1
+    _acceleration: 5
+  _laserConfig:
+    _radius: 1
+    _acceleration: 4
+    _countMax: 3
+    _coolDownIntervalSec: 5

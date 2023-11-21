@@ -15,6 +15,7 @@ namespace GS.Asteroids.Configuration.DataImplementation
         public int CountUp => _countUp;
         public float SpawnIntervalSec => _spawnIntervalSec;
         public float UpIntervalSec => _upIntervalSec;
+        public int Reward => _reward;
 
         [SerializeField, Range(5.0f, 50.0f)] private float _radiusMin = 10.0f;
         [SerializeField, Range(5.0f, 50.0f)] private float _radiusMax = 20.0f;
@@ -22,7 +23,8 @@ namespace GS.Asteroids.Configuration.DataImplementation
         [SerializeField, Range(0.1f, 5.0f)] private float _accelerationMax = 1.0f;
         [SerializeField, Range(0, 30)] private int _countMin = 1;
         [SerializeField, Range(0, 30)] private int _countUp = 1;
-        [SerializeField, Range(0.1f, 30.0f)] private float _spawnIntervalSec = 1.0f;
-        [SerializeField, Range(0.1f, 30.0f)] private float _upIntervalSec = 2.0f;
+        [SerializeField, Range(0.1f, 30.0f)] private float _spawnIntervalSec = 2.0f;
+        [SerializeField, Range(0.1f, 30.0f)] private float _upIntervalSec = 6.0f;
+        [SerializeField, Range(1, 30)] private int _reward = 1;
     }
 }

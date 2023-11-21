@@ -1,6 +1,7 @@
 using GS.Asteroids.Core.Interfaces;
 using GS.Asteroids.Core.Interfaces.AppStates;
 using GS.Asteroids.Core.Interfaces.GamePlay;
+using GS.Asteroids.Core.Interfaces.UIContext;
 using GS.Asteroids.Core.Systems;
 using System.Collections.Generic;
 
@@ -44,7 +45,7 @@ namespace GS.Asteroids.Core.States
             {
                 new StarSystem(appConfigDataProvider, level, _entityProvider, _objectProvider),
                 new MoveSystem(),
-                new OutOfLeveSystem(level, collisionCreateProvider),
+                new OutOfLevelSystem(level, collisionCreateProvider),
                 new CollidablesDestroySystem(collisionProcessProvider, _entityProvider, _objectProvider),
                 new RefreshDrawablePointsSystem(),
                 new DrawSystemProvider(drawSystem),
@@ -62,20 +63,23 @@ namespace GS.Asteroids.Core.States
                 system.Init();
             }
 
-            _uiSystem.ShowInfo
+            UiInfoContext context = new UiInfoContext
             (
                 title: _localizationSystem.Get(AppLocalizationKeys.AppName).ToUpper(),
                 description: _localizationSystem.Get(AppLocalizationKeys.PressKeyToStart).ToUpper()
             );
+
+            _uiSystem.ShowInfo(context);
         }
 
         public void Exit()
         {
-            _entityProvider.Dispose();
-            _objectProvider.Dispose();
-
             foreach (ISystem system in _systems)
                 _systemProvider.Remove(system);
+
+            _entityProvider.Dispose();
+            _objectProvider.Dispose();
+            _systemProvider.Dispose();
 
             _uiSystem.HideInfo();
         }

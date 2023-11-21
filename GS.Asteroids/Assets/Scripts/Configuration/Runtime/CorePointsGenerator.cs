@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mathf = UnityEngine.Mathf;
+using MathUtils = GS.Asteroids.Core.Utils.MathUtils;
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 
@@ -25,6 +26,15 @@ namespace GS.Asteroids.Configuration
         {
             float maxNoise = radius * 0.5f;
             int numOfPoints = Mathf.Max(3, Mathf.RoundToInt(maxNoise));
+            Func<int, float> getNoise = _ => Random.Range(-maxNoise, 0.0f);
+
+            return GetRoundPoints(radius, numOfPoints, getNoise);
+        }
+
+        internal IReadOnlyList<Vector3> GetCorePointsOfChip(float radius)
+        {
+            float maxNoise = radius * 0.25f;
+            int numOfPoints = Random.Range(4, 9);
             Func<int, float> getNoise = _ => Random.Range(-maxNoise, 0.0f);
 
             return GetRoundPoints(radius, numOfPoints, getNoise);
@@ -67,16 +77,11 @@ namespace GS.Asteroids.Configuration
                 .Range(0, numOfPoints)
                 .Select(index =>
                 {
-                    float angle = Map(index, 0, numOfPoints, 0, 2 * Mathf.PI);
+                    float angle = MathUtils.ReMap(index, 0, numOfPoints, 0, 2 * Mathf.PI);
                     float resultRadius = radius + getNoise.Invoke(index);
                     return new Vector3(resultRadius * Mathf.Cos(angle), resultRadius * Mathf.Sin(angle));
                 })
                 .ToArray();
-        }
-
-        private float Map(float value, float fromRangeStart, float fromRangeEnd, float toRangeStart, float toRangeEnd)
-        {
-            return toRangeStart + (value - fromRangeStart) * (toRangeEnd - toRangeStart) / (fromRangeEnd - fromRangeStart);
         }
     }
 }

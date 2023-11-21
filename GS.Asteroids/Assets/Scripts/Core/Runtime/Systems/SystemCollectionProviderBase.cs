@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace GS.Asteroids.Core.Systems
 {
-    internal abstract class SystemCollectionProviderBase<T> : IEntityProvider, IDisposable where T : IEntity
+    internal abstract class SystemCollectionProviderBase<T> : IEntityProvider where T : IEntity
     {
         private readonly HashSet<T> _collection;
 

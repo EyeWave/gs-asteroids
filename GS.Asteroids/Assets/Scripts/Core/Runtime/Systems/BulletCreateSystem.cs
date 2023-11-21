@@ -29,6 +29,7 @@ namespace GS.Asteroids.Core.Systems
         {
             base.Init();
 
+            _armourer = Collection.Single();
             _inputSystem.Fire += OnFire;
         }
 
@@ -45,15 +46,8 @@ namespace GS.Asteroids.Core.Systems
             _entityProvider.Add(Create());
         }
 
-        private IArmourer GetArmourer()
-        {
-            return Collection.Single();
-        }
-
         private IEntity Create()
         {
-            _armourer ??= GetArmourer();
-
             Bullet @object = _objectProvider.Take<Bullet>();
 
             @object.Position = _armourer.Position + _armourer.Direction * _armourer.Radius;

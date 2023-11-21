@@ -6,8 +6,8 @@ namespace GS.Asteroids.Root
 {
     internal sealed class RootCompositeProvider : IRoot, IRefreshable, IDisposable
     {
-        private readonly HashSet<IRefreshable> _refreshables = new HashSet<IRefreshable>(512);
-        private readonly HashSet<IDisposable> _disposables = new HashSet<IDisposable>(512);
+        private readonly List<IRefreshable> _refreshables = new List<IRefreshable>(512);
+        private readonly List<IDisposable> _disposables = new List<IDisposable>(512);
 
         private readonly HashSet<IRefreshable> _refreshablesInstall = new HashSet<IRefreshable>(512);
         private readonly HashSet<IDisposable> _disposablesInstall = new HashSet<IDisposable>(512);

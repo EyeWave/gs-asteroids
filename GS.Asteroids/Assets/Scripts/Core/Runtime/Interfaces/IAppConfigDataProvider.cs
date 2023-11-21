@@ -12,6 +12,8 @@ namespace GS.Asteroids.Core.Interfaces
 
         IReadOnlyList<Vector3> GetCorePointsOfAsteroid(float radius);
 
+        IReadOnlyList<Vector3> GetCorePointsOfChip(float radius);
+
         IReadOnlyList<Vector3> GetCorePointsOfUfo(float radius);
 
         IReadOnlyList<Vector3> GetCorePointsOfBullet(float radius);

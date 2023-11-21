@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace GS.Asteroids.Core
 {
-    internal class CompositeProvider : IObjectProvider, IEntityProvider, ISystemProvider, ICollisionCreateProvider, ICollisionProcessProvider
+    internal class CompositeProvider : IObjectProvider, IEntityProvider, ISystemProvider, ICollisionCreateProvider, ICollisionProcessProvider, IResultProvider
     {
         private readonly IRoot _root;
         private readonly IObjectProvider _objectProvider;
@@ -16,7 +16,11 @@ namespace GS.Asteroids.Core
         private readonly HashSet<IEntityProvider> _entityProviders;
         private readonly HashSet<Collision> _collisions;
 
+        private int _result = 0;
+
         IEnumerable<Collision> ICollisionProcessProvider.Collisions => _collisions;
+
+        int IResultProvider.Result => _result;
 
         internal CompositeProvider(IRoot root, IObjectProvider objectProvider)
         {
@@ -106,6 +110,16 @@ namespace GS.Asteroids.Core
         void ICollisionProcessProvider.Clear()
         {
             _collisions.Clear();
+        }
+
+        void IResultProvider.AddReward(int value)
+        {
+            _result += value;
+        }
+
+        void IResultProvider.Clear()
+        {
+            _result = 0;
         }
 
         private void AddEntityProvider(IEntityProvider entityProvider)

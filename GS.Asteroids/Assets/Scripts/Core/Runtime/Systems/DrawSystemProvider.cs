@@ -4,7 +4,7 @@ using System;
 
 namespace GS.Asteroids.Core.Systems
 {
-    internal sealed class DrawSystemProvider : SystemCollectionProviderBase<IDrawableProvider>, IRefreshable
+    internal sealed class DrawSystemProvider : SystemCollectionProviderBase<IDrawableEntity>, IRefreshable
     {
         private readonly IDrawSystem _drawSystem;
 
@@ -21,6 +21,7 @@ namespace GS.Asteroids.Core.Systems
         public override void Dispose()
         {
             base.Dispose();
+
             _drawSystem.Draw(Collection);
         }
     }

@@ -8,10 +8,14 @@ namespace GS.Asteroids.UiSystem
     {
         public static async Task<IUiSystem> Create(IUiContextLoader uiContextLoader)
         {
-            SimpleIUiContext uiContext = await uiContextLoader.LoadAsync<SimpleIUiContext>(nameof(SimpleIUiContext));
+            SimpleUiContext uiContext = await uiContextLoader.LoadAsync<SimpleUiContext>(nameof(SimpleUiContext));
             uiContext = Object.Instantiate(uiContext);
-            uiContext.name = $"[{nameof(SimpleIUiContext)}]";
-            return new SimpleIUiSystem(uiContext);
+            uiContext.name = $"[{nameof(SimpleUiContext)}]";
+            return new SimpleUiSystem
+            (
+                infoPanel: uiContext.InfoPanel,
+                gamePlayPanel: uiContext.GamePlayPanel
+            );
         }
     }
 }

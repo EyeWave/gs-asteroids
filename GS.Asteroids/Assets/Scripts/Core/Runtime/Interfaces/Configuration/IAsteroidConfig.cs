@@ -10,5 +10,6 @@ namespace GS.Asteroids.Core.Interfaces.Configuration
         int CountUp { get; }
         float SpawnIntervalSec { get; }
         float UpIntervalSec { get; }
+        int Reward { get; }
     }
 }

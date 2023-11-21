@@ -23,7 +23,9 @@ namespace GS.Asteroids.Core.States
             ILevel level,
             IAppConfigDataProvider appConfigDataProvider,
             IInputSystem inputSystem,
-            IDrawSystem drawSystem)
+            IDrawSystem drawSystem,
+            IUiSystem uiSystem,
+            IDebugLogger logger)
         {
             _entityProvider = compositeProvider;
             _objectProvider = compositeProvider;
@@ -31,26 +33,35 @@ namespace GS.Asteroids.Core.States
 
             ICollisionCreateProvider collisionCreateProvider = compositeProvider;
             ICollisionProcessProvider collisionProcessProvider = compositeProvider;
+            IResultProvider resultProvider = compositeProvider;
+            InputSystemDecorator inputSystemDecorator = new InputSystemDecorator(appConfigDataProvider, inputSystem, logger);
 
             _systems = new List<ISystem>
             {
-                new PlayerShipInputSystem(appConfigDataProvider, inputSystem),
+                inputSystemDecorator,
+                new PlayerShipInputSystem(appConfigDataProvider, inputSystemDecorator),
                 new AsteroidCreateSystem(appConfigDataProvider, _entityProvider, _objectProvider),
                 new AsteroidInputSystem(),
                 new UfoCreateSystem(appConfigDataProvider, _entityProvider, _objectProvider),
-                new UfoInputSystem(),
-                new BulletCreateSystem(inputSystem, _entityProvider, _objectProvider),
+                new UfoInputSystem(appConfigDataProvider),
+                new BulletCreateSystem(inputSystemDecorator, _entityProvider, _objectProvider),
+                new LaserCreateSystem(level, inputSystemDecorator, _entityProvider, _objectProvider),
 
                 new RotateSystem(),
                 new MoveSystem(),
                 new TeleportSystem(level),
 
-                new OutOfLeveSystem(level, collisionCreateProvider),
-                new CollidablesCollisionSystem(collisionCreateProvider),
+                new OutOfLevelSystem(level, collisionCreateProvider),
+                new SimpleCollidablesCollisionSystem(collisionCreateProvider),
+                new MultiCollidablesCollisionSystem(collisionCreateProvider),
 
+                new ChipCreateSystem(appConfigDataProvider, collisionProcessProvider, _entityProvider, _objectProvider),
+                new ResultCalculationSystem(appConfigDataProvider,collisionProcessProvider, resultProvider),
                 new CollidablesDestroySystem(collisionProcessProvider, _entityProvider, _objectProvider),
+                new RefreshLaserDrawablePointsSystem(),
                 new RefreshDrawablePointsSystem(),
                 new DrawSystemProvider(drawSystem),
+                new GamePlayUiRefreshSystem(uiSystem, inputSystemDecorator, logger),
 
                 new GameOverSystem(() => _isGameOver = true),
             };
@@ -58,22 +69,23 @@ namespace GS.Asteroids.Core.States
 
         public void Enter()
         {
+            _entityProvider.Add(_objectProvider.Take<PlayerShip>());
+
             foreach (ISystem system in _systems)
             {
                 _systemProvider.Add(system);
                 system.Init();
             }
-
-            _entityProvider.Add(_objectProvider.Take<PlayerShip>());
         }
 
         public void Exit()
         {
-            _entityProvider.Dispose();
-            _objectProvider.Dispose();
-
             foreach (ISystem system in _systems)
                 _systemProvider.Remove(system);
+
+            _entityProvider.Dispose();
+            _objectProvider.Dispose();
+            _systemProvider.Dispose();
 
             _isGameOver = false;
         }

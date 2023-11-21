@@ -4,14 +4,14 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace GS.Asteroids.Core.Objects
 {
-    internal sealed class Ufo : IUfoInputHandler, IMovable, ITeleportable, ICollidable, IDrawableProvider
+    internal sealed class Ufo : IUfoInputHandler, IMovable, ICollidable, IDrawableProvider
     {
         public Vector3 Position { get; set; }
         public Vector3 Velocity { get; set; }
         public float Rotation => 0.0f;
 
         public float Acceleration { get; set; }
-        
+
         public PointsContainer PointsContainer { get; set; }
         public float Radius => PointsContainer.Radius;
         public IReadOnlyList<Vector3> CorePoints => PointsContainer.CorePoints;

@@ -21,10 +21,6 @@ namespace GS.Asteroids.Core.Systems
             _objectProvider = objectProvider ?? throw new ArgumentNullException(nameof(objectProvider));
         }
 
-        public void Init()
-        {
-        }
-
         public void Refresh()
         {
             foreach (Collision collision in _collisionProcessProvider.Collisions)
