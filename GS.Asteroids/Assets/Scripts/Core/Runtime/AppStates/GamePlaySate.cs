@@ -58,6 +58,8 @@ namespace GS.Asteroids.Core.States
                 new ChipCreateSystem(appConfigDataProvider, collisionProcessProvider, _entityProvider, _objectProvider),
                 new ResultCalculationSystem(appConfigDataProvider,collisionProcessProvider, resultProvider),
                 new CollidablesDestroySystem(collisionProcessProvider, _entityProvider, _objectProvider),
+                new RefreshClearSystem(collisionProcessProvider),
+
                 new RefreshLaserDrawablePointsSystem(),
                 new RefreshDrawablePointsSystem(),
                 new DrawSystemProvider(drawSystem),

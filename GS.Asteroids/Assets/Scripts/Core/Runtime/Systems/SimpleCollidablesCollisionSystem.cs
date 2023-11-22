@@ -37,7 +37,7 @@ namespace GS.Asteroids.Core.Systems
                         continue;
 
                     if (CheckPossibleCollision(firstCollidable, secondCollidable) && CheckDistance(firstCollidable, secondCollidable))
-                        CreateCollision(firstCollidable, secondCollidable);
+                        _collisionCreateProvider.Create(firstCollidable, secondCollidable);
                 }
             }
 

@@ -1,3 +1,4 @@
+using GS.Asteroids.Core.Entity;
 using GS.Asteroids.Core.Interfaces;
 using GS.Asteroids.Core.Interfaces.GamePlay;
 using GS.Asteroids.Core.Objects;
@@ -25,23 +26,40 @@ namespace GS.Asteroids.Core.Systems
         {
             foreach (Collision collision in _collisionProcessProvider.Collisions)
                 CollidablesDestroy(collision);
-
-            _collisionProcessProvider.Clear();
         }
 
         private void CollidablesDestroy(Collision collision)
         {
-            if (collision.First != null)
+            if (collision.First is IMultiCollidable firstMultiCollidable)
             {
-                _entityProvider.Remove(collision.First);
-                _objectProvider.Return(collision.First);
+                Destroy(firstMultiCollidable, collision.Second);
             }
+            else if (collision.Second is IMultiCollidable secondMultiCollidable)
+            {
+                Destroy(secondMultiCollidable, collision.First);
+            }
+            else
+            {
+                Destroy(collision.First);
+                Destroy(collision.Second);
+            }
+        }
 
-            if (collision.Second != null)
-            {
-                _entityProvider.Remove(collision.Second);
-                _objectProvider.Return(collision.Second);
-            }
+        private void Destroy(IMultiCollidable multiCollidable, ICollidable collidable)
+        {
+            if (collidable == null)
+                Destroy(multiCollidable);
+            else
+                Destroy(collidable);
+        }
+
+        private void Destroy(ICollidable collidable)
+        {
+            if (collidable == null)
+                return;
+
+            _entityProvider.Remove(collidable);
+            _objectProvider.Return(collidable);
         }
     }
 }

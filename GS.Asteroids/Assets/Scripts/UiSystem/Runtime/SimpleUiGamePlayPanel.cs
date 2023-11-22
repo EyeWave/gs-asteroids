@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace GS.Asteroids.UiSystem
 {
-    internal class SimpleUiGamePlayPanel : MonoBehaviour, IUiGamePlayPanel
+    internal sealed class SimpleUiGamePlayPanel : MonoBehaviour, IUiGamePlayPanel
     {
         [SerializeField] private Canvas _canvas;
         [SerializeField] private TMP_Text _txtPosition;

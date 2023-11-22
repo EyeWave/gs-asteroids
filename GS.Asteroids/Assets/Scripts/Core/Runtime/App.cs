@@ -7,7 +7,7 @@ using System;
 
 namespace GS.Asteroids.Core
 {
-    public class App
+    public sealed class App
     {
         public App(IAppContext appContext)
         {

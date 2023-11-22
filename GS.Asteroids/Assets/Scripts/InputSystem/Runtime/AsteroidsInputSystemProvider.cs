@@ -30,8 +30,7 @@ namespace GS.Asteroids.InputSystem
 
         public Vector2 GetMove()
         {
-            Vector2 move = _controls.Player.Move.ReadValue<Vector2>();
-            return move;
+            return _controls.Player.Move.ReadValue<Vector2>();
         }
 
         public void Dispose()

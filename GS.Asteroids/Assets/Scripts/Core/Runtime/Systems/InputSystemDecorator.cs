@@ -2,9 +2,9 @@ using GS.Asteroids.Core.Interfaces;
 using GS.Asteroids.Core.Interfaces.Configuration;
 using GS.Asteroids.Core.Interfaces.GamePlay;
 using GS.Asteroids.Core.Interfaces.UIContext;
+using GS.Asteroids.Core.Utils;
 using System;
 using Mathf = UnityEngine.Mathf;
-using MathUtils = GS.Asteroids.Core.Utils.MathUtils;
 using Vector2 = UnityEngine.Vector2;
 
 namespace GS.Asteroids.Core.Systems

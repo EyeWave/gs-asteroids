@@ -6,7 +6,7 @@ using Vector2 = UnityEngine.Vector2;
 
 namespace GS.Asteroids.UiSystem
 {
-    internal class SimpleUiSystem : IUiSystem
+    internal sealed class SimpleUiSystem : IUiSystem
     {
         private readonly IUiInfoPanel _infoPanel;
         private readonly IUiGamePlayPanel _gamePlayPanel;

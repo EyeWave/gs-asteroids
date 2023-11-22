@@ -4,7 +4,6 @@ using GS.Asteroids.Core.Interfaces.Configuration;
 using GS.Asteroids.Core.Interfaces.GamePlay;
 using GS.Asteroids.Core.Objects;
 using System;
-using System.Collections.Generic;
 
 namespace GS.Asteroids.Core.Systems
 {

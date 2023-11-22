@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GS.Asteroids.UiSystem
 {
-    internal class SimpleUiContext : MonoBehaviour
+    internal sealed class SimpleUiContext : MonoBehaviour
     {
         internal IUiInfoPanel InfoPanel => _infoPanel;
         internal IUiGamePlayPanel GamePlayPanel => _gamePlayPanel;

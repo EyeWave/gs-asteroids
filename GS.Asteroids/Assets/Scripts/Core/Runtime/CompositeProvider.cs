@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace GS.Asteroids.Core
 {
-    internal class CompositeProvider : IObjectProvider, IEntityProvider, ISystemProvider, ICollisionCreateProvider, ICollisionProcessProvider, IResultProvider
+    internal sealed class CompositeProvider : IObjectProvider, IEntityProvider, ISystemProvider, ICollisionCreateProvider, ICollisionProcessProvider, IResultProvider
     {
         private readonly IRoot _root;
         private readonly IObjectProvider _objectProvider;

@@ -1,8 +1,8 @@
+using GS.Asteroids.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mathf = UnityEngine.Mathf;
-using MathUtils = GS.Asteroids.Core.Utils.MathUtils;
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 

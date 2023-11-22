@@ -2,6 +2,7 @@ using GS.Asteroids.Core.Entity;
 using GS.Asteroids.Core.Interfaces;
 using GS.Asteroids.Core.Interfaces.Configuration;
 using GS.Asteroids.Core.Objects;
+using GS.Asteroids.Core.Utils;
 using System;
 using System.Collections.Generic;
 using Mathf = UnityEngine.Mathf;
@@ -12,8 +13,6 @@ namespace GS.Asteroids.Core.Factories
 {
     internal sealed class ChipProvider : ObjectProviderBase<Chip>
     {
-        private const float TwoPi = Mathf.PI * 2;
-
         private readonly float _radius;
         private readonly float _acceleration;
         private readonly Func<float, IReadOnlyList<Vector3>> _getCorePoints;
@@ -33,7 +32,7 @@ namespace GS.Asteroids.Core.Factories
         protected override void OnTake(Chip @object)
         {
             IReadOnlyList<Vector3> corePoints = _getCorePoints.Invoke(_radius);
-            float direction = Random.Range(0.0f, TwoPi);
+            float direction = Random.Range(0.0f, MathUtils.TwoPi);
 
             @object.Velocity = _acceleration * new Vector3(Mathf.Cos(direction), Mathf.Sin(direction));
             @object.PointsContainer = new PointsContainer(_radius, corePoints);

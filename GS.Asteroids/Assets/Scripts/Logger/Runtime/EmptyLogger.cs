@@ -3,7 +3,7 @@ using System;
 
 namespace GS.Asteroids.Logger
 {
-    internal class EmptyLogger : IDebugLogger
+    internal sealed class EmptyLogger : IDebugLogger
     {
         public void Log(string message)
         {

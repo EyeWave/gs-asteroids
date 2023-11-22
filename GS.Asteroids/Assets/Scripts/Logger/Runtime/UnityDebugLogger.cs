@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GS.Asteroids.Logger
 {
-    internal class UnityDebugLogger : IDebugLogger
+    internal sealed class UnityDebugLogger : IDebugLogger
     {
         public void Log(string message)
         {

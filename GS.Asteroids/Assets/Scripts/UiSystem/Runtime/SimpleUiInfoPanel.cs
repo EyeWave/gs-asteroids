@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GS.Asteroids.UiSystem
 {
-    internal class SimpleUiInfoPanel : MonoBehaviour, IUiInfoPanel
+    internal sealed class SimpleUiInfoPanel : MonoBehaviour, IUiInfoPanel
     {
         [SerializeField] private Canvas _canvas;
         [SerializeField] private TMP_Text _txtTitle;

@@ -32,7 +32,7 @@ namespace GS.Asteroids.Core.Factories
             _bulletProvider = bulletProvider ?? throw new ArgumentNullException(nameof(bulletProvider));
             _laserProvider = laserProvider ?? throw new ArgumentNullException(nameof(laserProvider));
 
-            _activeObjects = new List<IEntity>(512);
+            _activeObjects = new List<IEntity>(1024);
         }
 
         public T Take<T>() where T : class, IEntity, new()

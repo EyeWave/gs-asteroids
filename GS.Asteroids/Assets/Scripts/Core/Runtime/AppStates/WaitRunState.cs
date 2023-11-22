@@ -45,8 +45,11 @@ namespace GS.Asteroids.Core.States
             {
                 new StarSystem(appConfigDataProvider, level, _entityProvider, _objectProvider),
                 new MoveSystem(),
+                
                 new OutOfLevelSystem(level, collisionCreateProvider),
                 new CollidablesDestroySystem(collisionProcessProvider, _entityProvider, _objectProvider),
+                new RefreshClearSystem(collisionProcessProvider),
+
                 new RefreshDrawablePointsSystem(),
                 new DrawSystemProvider(drawSystem),
             };

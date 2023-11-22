@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace GS.Asteroids.LocalizationSystem
 {
-    internal class AsteroidsSimpleLocalization : ILocalizationSystem
+    internal sealed class AsteroidsSimpleLocalization : ILocalizationSystem
     {
         private readonly IDebugLogger _logger;
         private readonly IReadOnlyDictionary<string, string> _map;
