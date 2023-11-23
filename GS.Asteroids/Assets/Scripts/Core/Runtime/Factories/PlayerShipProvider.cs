@@ -15,7 +15,7 @@ namespace GS.Asteroids.Core.Factories
         private readonly IReadOnlyList<Vector3> _corePoints;
 
         internal PlayerShipProvider(
-            ObjectFactory<PlayerShip> objectFactory,
+            ObjectFactoryBase<PlayerShip> objectFactory,
             Func<Vector3> getStartPosition,
             IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
         {

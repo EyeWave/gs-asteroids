@@ -2,11 +2,11 @@ using GS.Asteroids.Core.Entity;
 
 namespace GS.Asteroids.Core.Factories
 {
-    internal abstract class ObjectProviderBase<T> where T : class, IEntity, new()
+    internal abstract class ObjectProviderBase<T> : IObjectProvider<T> where T : class, IEntity
     {
         private readonly ObjectPool<T> _objectPool;
 
-        protected ObjectProviderBase(ObjectFactory<T> objectFactory)
+        protected ObjectProviderBase(ObjectFactoryBase<T> objectFactory)
         {
             _objectPool = new ObjectPool<T>(objectFactory.Create);
         }
@@ -18,10 +18,17 @@ namespace GS.Asteroids.Core.Factories
             return @object;
         }
 
-        public void Return(T @object)
+        public void Return(IEntity @object)
         {
-            OnReturn(@object);
-            _objectPool.Return(@object);
+            if (@object is T objectT)
+            {
+                OnReturn(objectT);
+                _objectPool.Return(objectT);
+            }
+            else
+            {
+                throw new System.ArgumentException($"Type '{@object.GetType().Name}' does not match provider type '{typeof(T).Name}'");
+            }
         }
 
         protected abstract void OnTake(T @object);

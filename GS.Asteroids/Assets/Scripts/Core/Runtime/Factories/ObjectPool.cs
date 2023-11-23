@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 
 namespace GS.Asteroids.Core.Factories
 {
-    internal class ObjectPool<T> where T : class, IEntity, new()
+    internal class ObjectPool<T> where T : IEntity
     {
         private readonly ConcurrentBag<T> _objects;
         private readonly Func<T> _objectGenerator;

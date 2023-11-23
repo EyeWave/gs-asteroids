@@ -14,7 +14,7 @@ namespace GS.Asteroids.Core.Factories
         private readonly IReadOnlyList<Vector3> _corePoints;
 
         internal BulletProvider(
-            ObjectFactory<Bullet> objectFactory,
+            ObjectFactoryBase<Bullet> objectFactory,
             IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
         {
             _config = appConfigDataProvider?.GetConfig<IBulletConfig>() ?? throw new ArgumentNullException(nameof(IBulletConfig));

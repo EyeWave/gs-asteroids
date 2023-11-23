@@ -16,7 +16,7 @@ namespace GS.Asteroids.Core.Factories
         private readonly Func<float, IReadOnlyList<Vector3>> _getCorePoints;
 
         internal AsteroidProvider(
-            ObjectFactory<Asteroid> objectFactory,
+            ObjectFactoryBase<Asteroid> objectFactory,
             Func<float, Vector3> getStartPosition,
             IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
         {

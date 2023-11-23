@@ -14,7 +14,7 @@ namespace GS.Asteroids.Core.Factories
         private readonly IReadOnlyList<Vector3> _corePoints;
 
         internal LaserProvider(
-            ObjectFactory<Laser> objectFactory,
+            ObjectFactoryBase<Laser> objectFactory,
             IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
         {
             _config = appConfigDataProvider?.GetConfig<ILaserConfig>() ?? throw new ArgumentNullException(nameof(ILaserConfig));

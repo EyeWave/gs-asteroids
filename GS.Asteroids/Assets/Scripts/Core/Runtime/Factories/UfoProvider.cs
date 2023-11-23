@@ -19,7 +19,7 @@ namespace GS.Asteroids.Core.Factories
         private readonly IReadOnlyList<Vector3> _corePoints;
 
         internal UfoProvider(
-            ObjectFactory<Ufo> objectFactory,
+            ObjectFactoryBase<Ufo> objectFactory,
             Func<float, Vector3> getStartPosition,
             IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
         {

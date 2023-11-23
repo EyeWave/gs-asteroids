@@ -1,3 +1,4 @@
+using GS.Asteroids.Core.Entity;
 using GS.Asteroids.Core.Interfaces;
 using GS.Asteroids.Core.Interfaces.GamePlay;
 using GS.Asteroids.Core.Objects;
@@ -8,23 +9,23 @@ namespace GS.Asteroids.Core.Factories
     {
         internal static IObjectProvider Create(ILevel level, IAppConfigDataProvider appConfigDataProvider)
         {
-            ObjectFactory<PlayerShip> playerShipFactory = new ObjectFactory<PlayerShip>();
-            ObjectProviderBase<PlayerShip> playerShipProvider = new PlayerShipProvider(playerShipFactory, level.GetPlayerStartPosition, appConfigDataProvider);
+            ObjectFactoryBase<PlayerShip> playerShipFactory = new PlayerShipFactory();
+            IObjectProvider<IEntity> playerShipProvider = new PlayerShipProvider(playerShipFactory, level.GetPlayerStartPosition, appConfigDataProvider);
 
-            ObjectFactory<Asteroid> asteroidFactory = new ObjectFactory<Asteroid>();
-            ObjectProviderBase<Asteroid> asteroidProvider = new AsteroidProvider(asteroidFactory, level.GetEnemyStartPosition, appConfigDataProvider);
+            ObjectFactoryBase<Asteroid> asteroidFactory = new AsteroidFactory();
+            IObjectProvider<IEntity> asteroidProvider = new AsteroidProvider(asteroidFactory, level.GetEnemyStartPosition, appConfigDataProvider);
 
-            ObjectFactory<Chip> chipFactory = new ObjectFactory<Chip>();
-            ObjectProviderBase<Chip> chipProvider = new ChipProvider(chipFactory, appConfigDataProvider);
+            ObjectFactoryBase<Chip> chipFactory = new ChipFactory();
+            IObjectProvider<IEntity> chipProvider = new ChipProvider(chipFactory, appConfigDataProvider);
 
-            ObjectFactory<Ufo> ufoFactory = new ObjectFactory<Ufo>();
-            ObjectProviderBase<Ufo> ufoProvider = new UfoProvider(ufoFactory, level.GetEnemyStartPosition, appConfigDataProvider);
+            ObjectFactoryBase<Ufo> ufoFactory = new UfoFactory();
+            IObjectProvider<IEntity> ufoProvider = new UfoProvider(ufoFactory, level.GetEnemyStartPosition, appConfigDataProvider);
 
-            ObjectFactory<Bullet> bulletFactory = new ObjectFactory<Bullet>();
-            ObjectProviderBase<Bullet> bulletProvider = new BulletProvider(bulletFactory, appConfigDataProvider);
-            
-            ObjectFactory<Laser> laserFactory = new ObjectFactory<Laser>();
-            ObjectProviderBase<Laser> laserProvider = new LaserProvider(laserFactory, appConfigDataProvider);
+            ObjectFactoryBase<Bullet> bulletFactory = new BulletFactory();
+            IObjectProvider<IEntity> bulletProvider = new BulletProvider(bulletFactory, appConfigDataProvider);
+
+            ObjectFactoryBase<Laser> laserFactory = new LaserFactory();
+            IObjectProvider<IEntity> laserProvider = new LaserProvider(laserFactory, appConfigDataProvider);
 
             return new ObjectProvider(
                 playerShipProvider,

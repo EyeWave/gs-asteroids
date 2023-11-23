@@ -18,7 +18,7 @@ namespace GS.Asteroids.Core.Factories
         private readonly Func<float, IReadOnlyList<Vector3>> _getCorePoints;
 
         internal ChipProvider(
-            ObjectFactory<Chip> objectFactory,
+            ObjectFactoryBase<Chip> objectFactory,
             IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
         {
             IChipConfig chipConfig = appConfigDataProvider?.GetConfig<IChipConfig>() ?? throw new ArgumentNullException(nameof(IChipConfig));
