@@ -7,23 +7,22 @@ using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 
-namespace GS.Asteroids.Core.Factories
+namespace GS.Asteroids.Core.Providers
 {
     internal sealed class UfoProvider : ObjectProviderBase<Ufo>
     {
         private readonly float _radius;
         private readonly float _accelerationMin;
         private readonly float _accelerationMax;
-
-        private readonly Func<float, Vector3> _getStartPosition;
+        private readonly Func<float, Vector3> _startPositionGenerator;
         private readonly IReadOnlyList<Vector3> _corePoints;
 
         internal UfoProvider(
-            ObjectFactoryBase<Ufo> objectFactory,
-            Func<float, Vector3> getStartPosition,
-            IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
+            Func<Ufo> objectGenerator,
+            Func<float, Vector3> startPositionGenerator,
+            IAppConfigDataProvider appConfigDataProvider) : base(objectGenerator)
         {
-            _getStartPosition = getStartPosition ?? throw new ArgumentNullException(nameof(getStartPosition));
+            _startPositionGenerator = startPositionGenerator ?? throw new ArgumentNullException(nameof(startPositionGenerator));
 
             IUfoConfig config = appConfigDataProvider?.GetConfig<IUfoConfig>() ?? throw new ArgumentNullException(nameof(IUfoConfig));
             _radius = config.Radius;
@@ -35,7 +34,7 @@ namespace GS.Asteroids.Core.Factories
 
         protected override void OnTake(Ufo @object)
         {
-            @object.Position = _getStartPosition.Invoke(_radius);
+            @object.Position = _startPositionGenerator.Invoke(_radius);
             @object.Acceleration = Random.Range(_accelerationMin, _accelerationMax);
             @object.PointsContainer = new PointsContainer(_radius, _corePoints);
         }

@@ -8,8 +8,8 @@ namespace GS.Asteroids.InputSystem
     internal sealed class AsteroidsInputSystemProvider : IInputSystem
     {
         public event Action Fire;
-
         public event Action AlternativeFire;
+        public event Action Exit;
 
         private AsteroidsSimpleControls _controls;
 
@@ -23,6 +23,11 @@ namespace GS.Asteroids.InputSystem
                     AlternativeFire?.Invoke();
                 else
                     Fire?.Invoke();
+            };
+
+            _controls.UI.Exit.performed += _ =>
+            {
+                Exit?.Invoke();
             };
 
             _controls.Enable();

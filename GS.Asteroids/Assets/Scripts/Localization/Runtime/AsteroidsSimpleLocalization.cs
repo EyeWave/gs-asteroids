@@ -1,5 +1,6 @@
 using GS.Asteroids.Core;
 using GS.Asteroids.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace GS.Asteroids.LocalizationSystem
@@ -37,7 +38,9 @@ namespace GS.Asteroids.LocalizationSystem
             {
                 {  AppLocalizationKeys.AppName, "Asteroids" },
                 {  AppLocalizationKeys.PressKeyToStart, "Hold Space to start" },
+                {  AppLocalizationKeys.PressKeyToExit, "Press esc to exit" },
                 {  AppLocalizationKeys.GameOver, "Game over" },
+                {  AppLocalizationKeys.YouResult, "You result" },
                 {  AppLocalizationKeys.PressKeyToContinue, "Hold space to continue" },
             };
         }

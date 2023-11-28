@@ -1,5 +1,5 @@
 # 2D клон оригинальнойигры Asteroids
-[![Unity 2022.3.13](https://img.shields.io/badge/unity-2022.3.13-blue.svg)](https://unity3d.com/get-unity/download)
+[![Unity 2022.3.14](https://img.shields.io/badge/unity-2022.3.14-blue.svg)](https://unity3d.com/get-unity/download)
 [![Link](https://img.shields.io/badge/wikipedia-link-blue.svg)](https://en.wikipedia.org/wiki/Asteroids_(video_game))
 
 Цель игры - получить как можно больше очков, расстреливая астероиды и летающие тарелки, избегая при этом столкновения с ними.

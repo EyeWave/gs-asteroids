@@ -3,7 +3,9 @@ using GS.Asteroids.Core.Interfaces.AppStates;
 using GS.Asteroids.Core.Interfaces.GamePlay;
 using GS.Asteroids.Core.Interfaces.UIContext;
 using GS.Asteroids.Core.Systems;
+using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace GS.Asteroids.Core.States
 {
@@ -11,6 +13,7 @@ namespace GS.Asteroids.Core.States
     {
         public AppState State => AppState.WaitRun;
 
+        private readonly IAppExitProvider _appExitProvider;
         private readonly IInputSystem _inputSystem;
         private readonly IUiSystem _uiSystem;
         private readonly ILocalizationSystem _localizationSystem;
@@ -18,11 +21,13 @@ namespace GS.Asteroids.Core.States
         private readonly IObjectProvider _objectProvider;
         private readonly ISystemProvider _systemProvider;
         private readonly IReadOnlyCollection<ISystem> _systems;
+        private readonly StringBuilder _descriptionStringBuilder;
 
         private bool _isMoveNext;
 
         public WaitRunState(
             CompositeProvider compositeProvider,
+            IAppExitProvider appExitProvider,
             ILevel level,
             IAppConfigDataProvider appConfigDataProvider,
             IInputSystem inputSystem,
@@ -30,9 +35,11 @@ namespace GS.Asteroids.Core.States
             IUiSystem uiSystem,
             ILocalizationSystem localizationSystem)
         {
+            _appExitProvider = appExitProvider;
             _inputSystem = inputSystem;
             _uiSystem = uiSystem;
             _localizationSystem = localizationSystem;
+            _descriptionStringBuilder = new StringBuilder(1024);
 
             _entityProvider = compositeProvider;
             _objectProvider = compositeProvider;
@@ -45,7 +52,7 @@ namespace GS.Asteroids.Core.States
             {
                 new StarSystem(appConfigDataProvider, level, _entityProvider, _objectProvider),
                 new MoveSystem(),
-                
+
                 new OutOfLevelSystem(level, collisionCreateProvider),
                 new CollidablesDestroySystem(collisionProcessProvider, _entityProvider, _objectProvider),
                 new RefreshClearSystem(collisionProcessProvider),
@@ -59,6 +66,7 @@ namespace GS.Asteroids.Core.States
         {
             _isMoveNext = false;
             _inputSystem.AlternativeFire += DoMoveNext;
+            _inputSystem.Exit += AppExit;
 
             foreach (ISystem system in _systems)
             {
@@ -66,13 +74,21 @@ namespace GS.Asteroids.Core.States
                 system.Init();
             }
 
+            _descriptionStringBuilder.Append(_localizationSystem.Get(AppLocalizationKeys.PressKeyToStart).ToUpper());
+            _descriptionStringBuilder.Append(Environment.NewLine);
+            _descriptionStringBuilder.Append(Environment.NewLine);
+            _descriptionStringBuilder.Append("<size=30>");
+            _descriptionStringBuilder.Append(_localizationSystem.Get(AppLocalizationKeys.PressKeyToExit).ToUpper());
+            _descriptionStringBuilder.Append("</size>");
+
             UiInfoContext context = new UiInfoContext
             (
                 title: _localizationSystem.Get(AppLocalizationKeys.AppName).ToUpper(),
-                description: _localizationSystem.Get(AppLocalizationKeys.PressKeyToStart).ToUpper()
+                description: _descriptionStringBuilder.ToString()
             );
 
             _uiSystem.ShowInfo(context);
+            _descriptionStringBuilder.Clear();
         }
 
         public void Exit()
@@ -95,7 +111,13 @@ namespace GS.Asteroids.Core.States
         private void DoMoveNext()
         {
             _inputSystem.AlternativeFire -= DoMoveNext;
+            _inputSystem.Exit -= AppExit;
             _isMoveNext = true;
+        }
+
+        private void AppExit()
+        {
+            _appExitProvider.AppExit();
         }
     }
 }

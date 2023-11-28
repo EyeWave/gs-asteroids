@@ -6,20 +6,20 @@ using System;
 using System.Collections.Generic;
 using Vector3 = UnityEngine.Vector3;
 
-namespace GS.Asteroids.Core.Factories
+namespace GS.Asteroids.Core.Providers
 {
     internal sealed class PlayerShipProvider : ObjectProviderBase<PlayerShip>
     {
         private readonly float _radius;
-        private readonly Func<Vector3> _getStartPosition;
+        private readonly Func<Vector3> _startPositionGenerator;
         private readonly IReadOnlyList<Vector3> _corePoints;
 
         internal PlayerShipProvider(
-            ObjectFactoryBase<PlayerShip> objectFactory,
-            Func<Vector3> getStartPosition,
-            IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
+            Func<PlayerShip> objectGenerator,
+            Func<Vector3> startPositionGenerator,
+            IAppConfigDataProvider appConfigDataProvider) : base(objectGenerator)
         {
-            _getStartPosition = getStartPosition ?? throw new ArgumentNullException(nameof(getStartPosition));
+            _startPositionGenerator = startPositionGenerator ?? throw new ArgumentNullException(nameof(startPositionGenerator));
             IPlayerConfig config = appConfigDataProvider?.GetConfig<IPlayerConfig>() ?? throw new ArgumentNullException(nameof(IPlayerConfig));
 
             _radius = config.Radius;
@@ -28,7 +28,7 @@ namespace GS.Asteroids.Core.Factories
 
         protected override void OnTake(PlayerShip @object)
         {
-            @object.Position = _getStartPosition.Invoke();
+            @object.Position = _startPositionGenerator.Invoke();
             @object.PointsContainer = new PointsContainer(_radius, _corePoints);
         }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GS.Asteroids.Root
 {
-    internal sealed class Root : MonoBehaviour, IRoot
+    internal sealed class Root : MonoBehaviour, IRoot, IAppExitProvider
     {
         private RootCompositeProvider _rootCompositeProvider;
 
@@ -19,9 +19,19 @@ namespace GS.Asteroids.Root
         {
             _rootCompositeProvider = new RootCompositeProvider();
             Camera camera = GetConfiguratedCamera();
-            IAppContext appContext = await AppContextFactory.Create(root: this, camera);
+            IAppContext appContext = await AppContextFactory.Create(root: this, appExitProvider: this, camera);
 
             new App(appContext);
+        }
+
+        private void Update()
+        {
+            _rootCompositeProvider?.Refresh();
+        }
+
+        private void OnDestroy()
+        {
+            _rootCompositeProvider?.Dispose();
         }
 
         public void Install<T>(T system) where T : class
@@ -34,14 +44,13 @@ namespace GS.Asteroids.Root
             _rootCompositeProvider.Uninstall(system);
         }
 
-        private void Update()
+        public void AppExit()
         {
-            _rootCompositeProvider?.Refresh();
-        }
-
-        private void OnDestroy()
-        {
-            _rootCompositeProvider?.Dispose();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
 
         private Camera GetConfiguratedCamera()

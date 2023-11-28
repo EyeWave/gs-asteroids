@@ -1,7 +1,7 @@
 ﻿using GS.Asteroids.Core.Entity;
 using System;
 
-namespace GS.Asteroids.Core.Factories
+namespace GS.Asteroids.Core.Providers
 {
     internal interface IObjectProvider<out T> where T : class, IEntity
     {

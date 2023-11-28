@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using Vector3 = UnityEngine.Vector3;
 
-namespace GS.Asteroids.Core.Factories
+namespace GS.Asteroids.Core.Providers
 {
     internal sealed class LaserProvider : ObjectProviderBase<Laser>
     {
@@ -14,8 +14,8 @@ namespace GS.Asteroids.Core.Factories
         private readonly IReadOnlyList<Vector3> _corePoints;
 
         internal LaserProvider(
-            ObjectFactoryBase<Laser> objectFactory,
-            IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
+            Func<Laser> objectGenerator,
+            IAppConfigDataProvider appConfigDataProvider) : base(objectGenerator)
         {
             _config = appConfigDataProvider?.GetConfig<ILaserConfig>() ?? throw new ArgumentNullException(nameof(ILaserConfig));
         }

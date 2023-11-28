@@ -9,29 +9,29 @@ using Mathf = UnityEngine.Mathf;
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 
-namespace GS.Asteroids.Core.Factories
+namespace GS.Asteroids.Core.Providers
 {
     internal sealed class ChipProvider : ObjectProviderBase<Chip>
     {
         private readonly float _radius;
         private readonly float _acceleration;
-        private readonly Func<float, IReadOnlyList<Vector3>> _getCorePoints;
+        private readonly Func<float, IReadOnlyList<Vector3>> _corePointsGenerator;
 
         internal ChipProvider(
-            ObjectFactoryBase<Chip> objectFactory,
-            IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
+            Func<Chip> objectGenerator,
+            IAppConfigDataProvider appConfigDataProvider) : base(objectGenerator)
         {
             IChipConfig chipConfig = appConfigDataProvider?.GetConfig<IChipConfig>() ?? throw new ArgumentNullException(nameof(IChipConfig));
             IAsteroidConfig asteroidConfig = appConfigDataProvider.GetConfig<IAsteroidConfig>() ?? throw new ArgumentNullException(nameof(IAsteroidConfig));
 
             _radius = asteroidConfig.RadiusMin * chipConfig.MultiplierOfAsteroidRadiusMin;
             _acceleration = asteroidConfig.AccelerationMax * chipConfig.MultiplierOfAsteroidAccelerationMax;
-            _getCorePoints = appConfigDataProvider.GetCorePointsOfChip;
+            _corePointsGenerator = appConfigDataProvider.GetCorePointsOfChip;
         }
 
         protected override void OnTake(Chip @object)
         {
-            IReadOnlyList<Vector3> corePoints = _getCorePoints.Invoke(_radius);
+            IReadOnlyList<Vector3> corePoints = _corePointsGenerator.Invoke(_radius);
             float direction = Random.Range(0.0f, MathUtils.TwoPi);
 
             @object.Velocity = _acceleration * new Vector3(Mathf.Cos(direction), Mathf.Sin(direction));

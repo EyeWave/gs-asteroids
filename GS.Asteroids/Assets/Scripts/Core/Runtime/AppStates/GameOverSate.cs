@@ -3,6 +3,7 @@ using GS.Asteroids.Core.Interfaces.AppStates;
 using GS.Asteroids.Core.Interfaces.GamePlay;
 using GS.Asteroids.Core.Interfaces.UIContext;
 using System;
+using System.Text;
 
 namespace GS.Asteroids.Core.States
 {
@@ -14,6 +15,7 @@ namespace GS.Asteroids.Core.States
         private readonly IInputSystem _inputSystem;
         private readonly IUiSystem _uiSystem;
         private readonly ILocalizationSystem _localizationSystem;
+        private readonly StringBuilder _descriptionStringBuilder;
 
         private bool _isMoveNext;
 
@@ -27,6 +29,7 @@ namespace GS.Asteroids.Core.States
             _inputSystem = inputSystem ?? throw new ArgumentNullException(nameof(inputSystem));
             _uiSystem = uiSystem ?? throw new ArgumentNullException(nameof(uiSystem));
             _localizationSystem = localizationSystem ?? throw new ArgumentNullException(nameof(localizationSystem));
+            _descriptionStringBuilder = new StringBuilder(1024);
         }
 
         public void Enter()
@@ -34,13 +37,23 @@ namespace GS.Asteroids.Core.States
             _isMoveNext = false;
             _inputSystem.AlternativeFire += DoMoveNext;
 
+            _descriptionStringBuilder.Append(_localizationSystem.Get(AppLocalizationKeys.YouResult).ToUpper());
+            _descriptionStringBuilder.Append(": ");
+            _descriptionStringBuilder.Append(_resultProvider.Result);
+            _descriptionStringBuilder.Append(Environment.NewLine);
+            _descriptionStringBuilder.Append(Environment.NewLine);
+            _descriptionStringBuilder.Append("<size=30>");
+            _descriptionStringBuilder.Append(_localizationSystem.Get(AppLocalizationKeys.PressKeyToContinue).ToLower());
+            _descriptionStringBuilder.Append("</size>");
+
             UiInfoContext context = new UiInfoContext
             (
                 title: _localizationSystem.Get(AppLocalizationKeys.GameOver).ToUpper(),
-                description: $"YOU RESULT: {_resultProvider.Result}{Environment.NewLine}{Environment.NewLine}<size=30>{_localizationSystem.Get(AppLocalizationKeys.PressKeyToContinue).ToLower()}</size>"
+                description: _descriptionStringBuilder.ToString()
             );
 
             _uiSystem.ShowInfo(context);
+            _descriptionStringBuilder.Clear();
         }
 
         public void Exit()

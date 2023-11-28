@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Mathf = UnityEngine.Mathf;
 
-namespace GS.Asteroids.Core.Factories
+namespace GS.Asteroids.Core.Providers
 {
     internal class ObjectProvider : IObjectProvider
     {

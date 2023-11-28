@@ -12,8 +12,8 @@ namespace GS.Asteroids.Core.Systems
     internal sealed class InputSystemDecorator : IInputSystem, ISystem, IRefreshable, IUIAlternativeFire
     {
         public event Action Fire;
-
         public event Action AlternativeFire;
+        public event Action Exit;
 
         public int AlternativeFireCount => _alternativeFireCount;
         public float AlternativeFireCoolDown { get; private set; }
@@ -46,6 +46,7 @@ namespace GS.Asteroids.Core.Systems
         {
             _inputSystem.Fire += OnInputFire;
             _inputSystem.AlternativeFire += OnInputAlternativeFire;
+            _inputSystem.Exit += OnInputExit;
 
             _alternativeFireCount = _alternativeFireCountMax;
             _alternativeFireCoolDown = 0.0f;
@@ -58,6 +59,7 @@ namespace GS.Asteroids.Core.Systems
         {
             _inputSystem.Fire -= OnInputFire;
             _inputSystem.AlternativeFire -= OnInputAlternativeFire;
+            _inputSystem.Exit -= OnInputExit;
         }
 
         public void Refresh()
@@ -101,6 +103,11 @@ namespace GS.Asteroids.Core.Systems
 
                 _logger.Log("AlternativeFire");
             }
+        }
+
+        private void OnInputExit()
+        {
+            Exit?.Invoke();
         }
     }
 }

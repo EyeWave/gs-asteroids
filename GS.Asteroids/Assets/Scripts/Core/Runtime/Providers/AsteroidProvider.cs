@@ -7,30 +7,30 @@ using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 
-namespace GS.Asteroids.Core.Factories
+namespace GS.Asteroids.Core.Providers
 {
     internal sealed class AsteroidProvider : ObjectProviderBase<Asteroid>
     {
         private readonly IAsteroidConfig _config;
-        private readonly Func<float, Vector3> _getStartPosition;
-        private readonly Func<float, IReadOnlyList<Vector3>> _getCorePoints;
+        private readonly Func<float, Vector3> _startPositionGenerator;
+        private readonly Func<float, IReadOnlyList<Vector3>> _corePointsGenerator;
 
         internal AsteroidProvider(
-            ObjectFactoryBase<Asteroid> objectFactory,
-            Func<float, Vector3> getStartPosition,
-            IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
+            Func<Asteroid> objectGenerator,
+            Func<float, Vector3> startPositionGenerator,
+            IAppConfigDataProvider appConfigDataProvider) : base(objectGenerator)
         {
-            _getStartPosition = getStartPosition ?? throw new ArgumentNullException(nameof(getStartPosition));
+            _startPositionGenerator = startPositionGenerator ?? throw new ArgumentNullException(nameof(startPositionGenerator));
             _config = appConfigDataProvider?.GetConfig<IAsteroidConfig>() ?? throw new ArgumentNullException(nameof(IAsteroidConfig));
-            _getCorePoints = appConfigDataProvider.GetCorePointsOfAsteroid;
+            _corePointsGenerator = appConfigDataProvider.GetCorePointsOfAsteroid;
         }
 
         protected override void OnTake(Asteroid @object)
         {
             float radius = Random.Range(_config.RadiusMin, _config.RadiusMax);
-            IReadOnlyList<Vector3> corePoints = _getCorePoints.Invoke(radius);
+            IReadOnlyList<Vector3> corePoints = _corePointsGenerator.Invoke(radius);
 
-            @object.Position = _getStartPosition.Invoke(radius);
+            @object.Position = _startPositionGenerator.Invoke(radius);
             @object.Acceleration = Random.Range(_config.AccelerationMin, _config.AccelerationMax);
             @object.AngularAcceleration = Random.value < 0.5f ? -1.0f : 1.0f * Random.Range(_config.AccelerationMin, _config.AccelerationMax);
             @object.PointsContainer = new PointsContainer(radius, corePoints);

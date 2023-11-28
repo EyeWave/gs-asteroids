@@ -6,6 +6,7 @@ namespace GS.Asteroids.Root
     internal sealed class AppContext : IAppContext
     {
         public IRoot Root { get; }
+        public IAppExitProvider AppExitProvider { get; }
         public IAppConfigDataProvider AppConfigDataProvider { get; }
         public ILevel Level { get; }
         public IDrawSystem DrawSystem { get; }
@@ -16,6 +17,7 @@ namespace GS.Asteroids.Root
 
         internal AppContext(
             IRoot root,
+            IAppExitProvider appExitProvider,
             IAppConfigDataProvider appConfigDataProvider,
             ILevel level,
             IDrawSystem drawSystem,
@@ -25,6 +27,7 @@ namespace GS.Asteroids.Root
             IDebugLogger logger)
         {
             Root = root ?? throw new ArgumentNullException(nameof(root));
+            AppExitProvider = appExitProvider ?? throw new ArgumentNullException(nameof(appExitProvider));
             AppConfigDataProvider = appConfigDataProvider ?? throw new ArgumentNullException(nameof(appConfigDataProvider));
             Level = level ?? throw new ArgumentNullException(nameof(level));
             DrawSystem = drawSystem ?? throw new ArgumentNullException(nameof(drawSystem));

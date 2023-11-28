@@ -1,7 +1,7 @@
-using GS.Asteroids.Core.Factories;
 using GS.Asteroids.Core.Interfaces;
 using GS.Asteroids.Core.Interfaces.AppStates;
 using GS.Asteroids.Core.Interfaces.GamePlay;
+using GS.Asteroids.Core.Providers;
 using GS.Asteroids.Core.States;
 using System;
 
@@ -27,6 +27,7 @@ namespace GS.Asteroids.Core
             IAppState waitRunState = new WaitRunState
             (
                 compositeProvider,
+                appContext.AppExitProvider,
                 appContext.Level,
                 appContext.AppConfigDataProvider,
                 appContext.InputSystem,

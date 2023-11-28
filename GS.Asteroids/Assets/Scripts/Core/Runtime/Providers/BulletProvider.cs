@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using Vector3 = UnityEngine.Vector3;
 
-namespace GS.Asteroids.Core.Factories
+namespace GS.Asteroids.Core.Providers
 {
     internal sealed class BulletProvider : ObjectProviderBase<Bullet>
     {
@@ -14,8 +14,8 @@ namespace GS.Asteroids.Core.Factories
         private readonly IReadOnlyList<Vector3> _corePoints;
 
         internal BulletProvider(
-            ObjectFactoryBase<Bullet> objectFactory,
-            IAppConfigDataProvider appConfigDataProvider) : base(objectFactory)
+            Func<Bullet> objectGenerator,
+            IAppConfigDataProvider appConfigDataProvider) : base(objectGenerator)
         {
             _config = appConfigDataProvider?.GetConfig<IBulletConfig>() ?? throw new ArgumentNullException(nameof(IBulletConfig));
             _corePoints = appConfigDataProvider.GetCorePointsOfBullet(_config.Radius);

@@ -2,7 +2,7 @@ using GS.Asteroids.Core.Entity;
 using System;
 using System.Collections.Concurrent;
 
-namespace GS.Asteroids.Core.Factories
+namespace GS.Asteroids.Core.Providers
 {
     internal class ObjectPool<T> where T : IEntity
     {

@@ -13,7 +13,7 @@ namespace GS.Asteroids.Root
 {
     internal static class AppContextFactory
     {
-        internal static async Task<IAppContext> Create(IRoot root, Camera camera)
+        internal static async Task<IAppContext> Create(IRoot root, IAppExitProvider appExitProvider, Camera camera)
         {
             UnityResourceLoader unityResourceLoader = new UnityResourceLoader();
 
@@ -35,6 +35,7 @@ namespace GS.Asteroids.Root
 
             return new AppContext(
                 root,
+                appExitProvider,
                 appConfigDataProvider,
                 level,
                 drawSystem,
